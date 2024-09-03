@@ -1,1 +1,1 @@
-﻿# Q3T_SOL-Beatrice-Thelisma
+﻿# Q3T_SOL-Fundraising-Project
