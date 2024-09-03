@@ -10,12 +10,3 @@ pub use instructions::*;
 pub use state::*;
 
 declare_id!("HXAfzsXRVnzqD4spuM8hGsJk7XfJWuMd9i6MYuC3c9rk");
-
-#[program]
-pub mod capstone {
-    use super::*;
-
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        initialize::handler(ctx)
-    }
-}
