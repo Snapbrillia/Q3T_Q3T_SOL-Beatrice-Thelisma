@@ -4,7 +4,7 @@ import SectionHeader from '../atom/SectionHeader';
 import Input from '../atom/Input';
 
 
-const SignUp = () => {
+const CreateCampaign = () => {
    const initialData = {
     organizationName: "",
     email: "",
@@ -35,7 +35,7 @@ const SignUp = () => {
       <div className="h-auto  self-start w-full   bg-[#FBECF] sticky lg:flex lg:h-screen lg:items-center lg:w-[45%] ">
         <SectionHeader
           className="text-center md:px-[31px] lg:text-left lg:px-[10%]"
-          headingChildren={"Transform your fundraising today"}
+          headingChildren={"Create your campaign"}
           headingClassName="font-bold "
           pChildren="Guidance, expertise, and personalized setup - all a conversation away."
           pClassName="  text-[#808080] my-[8px]"
@@ -48,15 +48,15 @@ const SignUp = () => {
           // action={signUpNewUsers}
           onSubmit={handleSubmit}
         >
-          <Input required id='organizationName' name='organizationName' type='text' className='mt-4' htmlFor='organizationName' label={<>Name of your organization of campaign<span className='font-bold text-red-500'>*</span></> } value={inputValue.organizationName} onChange={handleChanges} />
-          <Input required id='email' name='email' type='email' className='mt-4' htmlFor='email' label={<>Email<span className='font-bold text-red-500'>*</span></> } value={inputValue.email} onChange={handleChanges} />
-          <Input required id='telNum' name='telNum' type='tel' className='mt-4' htmlFor='telNum' label={<>Phone Number<span className='font-bold text-red-500'>*</span></> } value={inputValue.telNum} onChange={handleChanges} />
-          <Input required id='organizationRegNum' name='organizationRegNum' type='text' className='mt-4' htmlFor='organizationRegNum' label={<>Organization Registration Number<span className='font-bold text-red-500'>*</span></>} value={inputValue.organizationRegNum} onChange={handleChanges} />
-          <Input required id='organizationWebsite' name='organizationWebsite' type='text' className='mt-4' htmlFor='organizationWebsite' label={<>Organization Website<span className='font-bold text-red-500'>*</span></>} value={inputValue.organizationWebsite} onChange={handleChanges} />
-          <Input required id='walletAddress' name='walletAddress' type='text' className='mt-4' htmlFor='walletAddress' label={<>Wallet Address<span className='font-bold text-red-500'>*</span></>} value={inputValue.walletAddress} onChange={handleChanges} />
+          <Input id='campaignTitle' name='campaignTitle' type='text' className='mt-4' htmlFor='campaignTitle' label={<>Campaign Title<span className='font-bold text-red-500'>*</span></> } value={inputValue.organizationName} onChange={handleChanges} />
+          <Input id='targetAmount' name='targetAmount' type='number' className='mt-4' htmlFor='targetAmount' label={<><div>Target amount<span className='font-bold text-red-500'>*</span></div><i>Write down the amount you intend raising for this campaign</i> </>} value={inputValue.email} onChange={handleChanges} />
+          <Input id='telNum' name='telNum' type='tel' className='mt-4' htmlFor='telNum' label={<>Phone Number<span className='font-bold text-red-500'>*</span></> } value={inputValue.telNum} onChange={handleChanges} />
+          <Input id='organizationRegNum' name='organizationRegNum' type='text' className='mt-4' htmlFor='organizationRegNum' label={<>Organization Registration Number<span className='font-bold text-red-500'>*</span></>} value={inputValue.organizationRegNum} onChange={handleChanges} />
+          <Input id='organizationWebsite' name='organizationWebsite' type='text' className='mt-4' htmlFor='organizationWebsite' label={<>Organization Website<span className='font-bold text-red-500'>*</span></>} value={inputValue.organizationWebsite} onChange={handleChanges} />
+          <Input id='walletAddress' name='walletAddress' type='text' className='mt-4' htmlFor='walletAddress' label={<>Wallet Address<span className='font-bold text-red-500'>*</span></>} value={inputValue.walletAddress} onChange={handleChanges} />
           <div className="">
             <label className='block  text-[#3E3E3E] text-[1rem]  md:[1.3rem]' htmlFor="organizationMission">Organization mission<span className='font-bold text-red-500'>*</span></label>
-            <textarea rows={5} required  className='w-full border-b-[3px]  border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px]  mt-[12px]  text-[1.1rem] outline-0 ' value={inputValue.organizationMission} onChange={handleChanges} name="organizationMission" id="organizationMission"></textarea>
+            <textarea rows={5}  className='w-full border-b-[3px]  border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px]  mt-[12px]  text-[1.1rem] outline-0 ' value={inputValue.organizationMission} onChange={handleChanges} name="organizationMission" id="organizationMission"></textarea>
           </div>
           <Button className='bg-primary_color text-white py-4 text-[1.2rem] mt-3 ' children={"Create acount"} /> 
         </form>
@@ -66,4 +66,4 @@ const SignUp = () => {
   );
 }
 
-export default SignUp
+export default CreateCampaign

@@ -5,7 +5,7 @@ import { cn } from "../../util/twMerge";
 interface InputProp {
   className?: string;
   labelClassname?: string;
-  label?: string;
+  label?: string|React.ReactNode;
   htmlFor?: string;
   type: string;
   placeholder?: string;
@@ -46,7 +46,7 @@ const Input = ({
       <input
         disabled={disabled}
         className={cn(
-          "border-b-[3px]  border-[#808080] py-6 rounded-[4px] pl-[10px] pr-[5px] w-full mt-[12px] h-[28px] text-[.9rem] outline-0 ",
+          "border-b-[3px]  border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px] w-full mt-[12px] h-[28px] text-[1.1rem] outline-0 ",
           inputClassName,
           disabled ? "opacity-60" : ""
         )}
