@@ -1,7 +1,8 @@
+import React from 'react';
 import logo from './assets/logo_gravid.png';
 import './App.css';
 
-function App() {
+export default function App() {
   return (
     <div className="App">
       <header className="App-header">
@@ -15,11 +16,9 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-         Please Sing up
+         Please Sing up or Sign in
         </a>
       </header>
     </div>
   );
 }
-
-export default App;
