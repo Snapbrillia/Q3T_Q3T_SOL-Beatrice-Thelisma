@@ -16,7 +16,7 @@ export default function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-         Please Sing up
+         Please Sing up or Sign in
         </a>
       </header>
     </div>
