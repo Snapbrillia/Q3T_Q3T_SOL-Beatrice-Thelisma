@@ -4,7 +4,7 @@ import anime from "animejs";
 import "./home.css"; // Your styles will go here
 import WalletConnectButton from "./connectWalletButton.tsx";
 
-export default function App () {
+export default function Home() {
   const [activeNum, setActiveNum] = useState(0);
   const [show, setShow] = useState<boolean>(true);
   const nodeRef = useRef(null);
@@ -18,7 +18,7 @@ export default function App () {
         "Why not help us build those super warm fortresses for our little friends!? Winter is coming and they need that money to buy that wood, insulation and tools.",
     },
     {
-            backgroundImage: "https://plus.unsplash.com/premium_photo-1681140560925-a50f402b8525?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      backgroundImage: "https://plus.unsplash.com/premium_photo-1681140560925-a50f402b8525?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       mainTitle: "Help New!",
       description: "You know what to do. We know you know. nEW",
       content:
@@ -76,7 +76,7 @@ export default function App () {
 
   return (
     <div id="app" className="crowd-funding">
-      < WalletConnectButton />
+      {/* < WalletConnectButton /> */}
       <CSSTransition
         in={true}
         nodeRef={nodeRef}
@@ -93,9 +93,9 @@ export default function App () {
         {show ? (
           <div>
             <div className="crowd-funding__header" ref={nodeRef} style={{
-          backgroundImage: `linear-gradient(rgba(200, 70, 87, 0.3), rgba(133, 54, 95, 0.8)), url(${items[activeNum].backgroundImage})`,
-          // linear-gradient(rgba(133, 54, 95, 0.8), rgba(200, 70, 87, 0.8))
-        }}>
+              backgroundImage: `linear-gradient(rgba(200, 70, 87, 0.3), rgba(133, 54, 95, 0.8)), url(${items[activeNum].backgroundImage})`,
+              // linear-gradient(rgba(133, 54, 95, 0.8), rgba(200, 70, 87, 0.8))
+            }}>
               <div className="crowd-funding__header__description">
                 <h1>HELP!</h1>
                 <p>
@@ -132,7 +132,11 @@ export default function App () {
                 <span className="content">{items[activeNum].content}</span>
                 <div className="button">
                   <strong>
-                    <small>donate now</small>
+                    <small>
+                      <a href={`donate/`}>
+                        donate now
+                      </a>
+                    </small>
                   </strong>
                 </div>
               </div>
@@ -180,13 +184,13 @@ export default function App () {
         onClick={() => handleClick("right")}
       ></span>
       <div className="inspired-by">
-      <a target="_blank" href="#">
-        <small>By Grav.Id <strong>team</strong> for</small>
-      </a>
-      <a className="second-link" target="_blank" href="#">
-        <small> Solana <strong>WBA capstone project</strong></small>
-      </a>
-    </div>
+        <a target="_blank" href="#">
+          <small>By Grav.Id <strong>team</strong> for</small>
+        </a>
+        <a className="second-link" target="_blank" href="#">
+          <small> Solana <strong>WBA capstone project</strong></small>
+        </a>
+      </div>
     </div>
   );
 };
