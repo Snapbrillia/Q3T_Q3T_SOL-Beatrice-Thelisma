@@ -1,12 +1,45 @@
-pub mod constants;
-pub mod error;
-pub mod instructions;
-pub mod state;
-
 use anchor_lang::prelude::*;
 
-pub use constants::*;
-pub use instructions::*;
-pub use state::*;
+declare_id!("8ekk3EkAg5o4u3oMWHLDqYXhBA4AZqmQaeecvNDgdWup");
 
-declare_id!("HXAfzsXRVnzqD4spuM8hGsJk7XfJWuMd9i6MYuC3c9rk");
+mod state;
+mod instructions;
+mod error;
+mod constants;
+
+use instructions::*;
+use error::*;
+pub use constants::*;
+
+#[program]
+pub mod capstone {
+    use super::*;
+
+    pub fn initialize(ctx: Context<Initialize>, amount: u64, deadline: i64) -> Result<()> {
+
+        ctx.accounts.initialize(amount, deadline, &ctx.bumps)?;
+
+        Ok(())
+    }
+
+    pub fn contribute(ctx: Context<Contribute>, amount: u64) -> Result<()> {
+
+        ctx.accounts.contribute(amount)?;
+
+        Ok(())
+    }
+
+    pub fn check_contributions(ctx: Context<CheckContributions>) -> Result<()> {
+
+        ctx.accounts.check_contributions()?;
+
+        Ok(())
+    }
+
+    pub fn refund(ctx: Context<Refund>) -> Result<()> {
+
+        ctx.accounts.refund()?;
+
+        Ok(())
+    }
+}
