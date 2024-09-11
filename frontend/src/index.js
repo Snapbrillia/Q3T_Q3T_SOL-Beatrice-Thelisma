@@ -8,6 +8,9 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import SignUp from './fundraiser/pages/SignUp.tsx';
+import SignIn from './fundraiser/pages/SignIn.tsx';
+import Dashboard from './fundraiser/pages/Dashboard.tsx';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +20,18 @@ const router = createBrowserRouter([
   {
     path: "donate",
     element: <Donate />,
+  },
+  {
+    path: "dashboard",
+    element: <Dashboard />,
+  },
+  {
+    path: "/auth/sign-up",
+    element: <SignUp />,
+  },
+  {
+    path: "/auth/sign-in",
+    element: <SignIn />,
   },
 ]);
 

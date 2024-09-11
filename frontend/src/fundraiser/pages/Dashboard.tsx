@@ -10,15 +10,15 @@ import Button from '../atom/Button';
 
 const Dashboard = () => {
   return (
-    <main className="">
-        <section className="relative h-[50vh] rounded-b-md">
+    <main className="w-[80vw]  py-[5%]">
+        <section className="relative h-[40vh] lg:h-[50vh]  rounded-md">
             {/* <Image className='h-full' imgClassName='object-cover' src='/images/forest.jpg' /> */}
-            <div className="blk_graet_bg bg-color_gradient bg-center w-full absolute top-0 h-full rounded-b-[3rem] "></div>
+            <div className="blk_graet_bg bg-color_gradient bg-center w-full absolute top-0 h-full rounded-[12px] "></div>
             <div className="flex items-end justify-between absolute bottom-[20px] text-white  px-8 w-full">
               <div className="w-[50%]">
 
                 <h3 className=" text-[2.5rem] font-bold">Good of the Earth</h3>
-                <p className="text-[1rem]">Good of the Earth is a non-profit organization dedicated to environmental conservation. We focus on reforestation projects, aiming to plant trees in deforested areas across the globe. </p>
+                <p className="text-[1rem]">Good of the Earth is a non-profit organization dedicated to environmental conservation. </p>
               </div>
               <div className="">
                <div className='font-bold'>
@@ -30,13 +30,13 @@ const Dashboard = () => {
               </div>
             </div>
         </section>
-        <section className="flex flex-wrap justify-center items-center mt-7 w-full">
+        <section className="flex flex-wrap justify-center items-center mt-7 w-full ">
             <div className=" w-[100%]  flex flex-wrap items-center justify-around gap-[10px]">
-          <Card icon={<GiCash className='text-[1.6rem]' />} title='Total Amount Raised' result="$10237" active={true} subText="more than the previous week" />
-          <Card icon={<MdSupervisedUserCircle className='text-[1.6rem]' />} title='Number of Contributors' result="137" active={false} />
-          <Card icon={<LuCalendarDays className='text-[1.6rem]' />} title='Number of days left' result="25" />
-          {/* <Card title='' result="$10237" /> */}
-        </div>
+              <Card icon={<GiCash className='text-[1.6rem]' />} title='Total Amount Raised' result="$400" active={true} subText="more than the previous week" />
+              <Card icon={<MdSupervisedUserCircle className='text-[1.6rem]' />} title='Number of Contributors' result="137" active={false} />
+              <Card icon={<LuCalendarDays className='text-[1.6rem]' />} title='Number of days left' result="25/50" />
+              {/* <Card title='' result="$10237" /> */}
+            </div>
         </section>
     </main>
   )

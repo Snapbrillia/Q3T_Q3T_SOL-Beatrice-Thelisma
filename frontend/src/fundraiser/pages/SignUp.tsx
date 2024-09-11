@@ -3,6 +3,7 @@ import Button from '../atom/Button'
 import SectionHeader from '../atom/SectionHeader';
 import Input from '../atom/Input';
 import { FaRegEyeSlash,FaRegEye } from "react-icons/fa6";
+import { Link } from 'react-router-dom';
 
 
 const SignUp = () => {
@@ -38,20 +39,21 @@ const SignUp = () => {
   }
 
   return(
- <main className="bg-graidnt_bg items-center justify-center overflow-y-auto lg:flex lg:overflow-y-clip">
-      <div className="h-auto  self-start w-full   bg-[#FBECF] sticky lg:flex lg:h-screen lg:items-center lg:w-[45%] ">
+ <main className="bg-graidnt_bg items-center w-[90vw] justify-center overflow-y-auto lg:flex lg:overflow-y-clip">
+      <div className="h-auto  sself-start w-full   bg-[#FBECF] sticky lg:flex flex-col itfems-center  dlg:h-screen  md:px-[31px] lg:text-left lg:px-[3%] lg:w-[45%] ">
         <SectionHeader
-          className="text-center md:px-[31px] lg:text-left lg:px-[10%]"
+          // className="text-center md:px-[31px] lg:text-left lg:px-[10%]"
           headingChildren={"Transform your fundraising today"}
-          headingClassName="font-bold "
+          headingClassName="font-bold text-[2rem]"
           pChildren="Guidance, expertise, and personalized setup - all a conversation away."
           pClassName="  text-[#808080] my-[8px]"
         /> 
+        <p className="">Already have an account? <Link className='text-primary_color' to={"/auth/sign-in"}>Sign in</Link></p>
       </div>
       <section className="w-[100%] my-[10%] px-[16px]  h-screen no-scrollbar overflow-y-scroll md:w-[75%] lg:my-0 lg:px-[5%] lg:py-[4%]  lg:w-[65%]">
        
         <form
-          className="shadow-form_shadow rounded-[10px] md:w-[100%] md:px-[31px] lg:py-[5%] lg:px-[5%] "
+          className="shadow-form_shadow no-scrollbar overflow-y-scroll rounded-[10px] md:w-[100%] md:px-[31px] lg:py-[5%] lg:px-[5%] "
           // action={signUpNewUsers}
           onSubmit={handleSubmit}
         >
@@ -71,13 +73,13 @@ const SignUp = () => {
               Password<span className='font-bold text-red-500'>*</span>
             </label>
             <div className="flex items-center border-b-[3px]  border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px] w-full mt-[12px] h-[28px] text-[1.1rem] ">
-              <input id='password' name='password' type={showPW?"text":"password"} className=' outline-0 flex-1 w]' required />
+              <input id='password' name='password' type={showPW?"text":"password"} className='bg-transparent outline-0 flex-1 w]' required />
               <div onClick={()=>setShowPW(!showPW)} className="text-[1.3rem]">
                 {showPW?<FaRegEye />:<FaRegEyeSlash />}
               </div>
             </div>
           </div>
-          <Button className='bg-primary_color text-white py-4 text-[1.2rem] mt-9  '  >Create acount</Button> 
+          <Button className='bg-primary_color text-white py-4 text-[1.2rem] mt-9  border-[1.5px] border-solid hover:text-primary_color hover:bg-transparent hover:border-primary_color'  >Create acount</Button> 
         </form>
         
       </section>

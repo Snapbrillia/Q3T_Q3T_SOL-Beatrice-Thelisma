@@ -18,12 +18,12 @@ const SectionHeader = ({
 }: SectionHeaderProp) => {
   return (
     <div className={cn("flex flex-col", className)}>
-      <h2 className={cn("  text-[1.5rem] md:text-[3.5rem]  ", headingClassName)}>
+      <h2 className={cn("  text-[1.5rem] md:text-[3rem]  ", headingClassName)}>
         {headingChildren}
       </h2>
       <p
         className={cn(
-          " text-[#434343] font-pop text-[15px] md:text-[1.2rem]",
+          " text-[#434343] font-pop text-[15px] md:text-[1.1rem]",
           pClassName
         )}
       >

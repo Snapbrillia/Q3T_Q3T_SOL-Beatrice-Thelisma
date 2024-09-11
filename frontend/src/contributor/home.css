@@ -14,6 +14,8 @@ body {
   background: linear-gradient(to top right, #d5888c, #fdfafa 43%, #fdfafa 56%, #85365f);
   margin: 0 auto;
   padding: 20px 50px;
+  /* I think we should add a no repeat to the background, it would help the tablet view of the dashboard page */
+  /* background-repeat: no-repeat; */
 }
 
 .crowd-funding {
