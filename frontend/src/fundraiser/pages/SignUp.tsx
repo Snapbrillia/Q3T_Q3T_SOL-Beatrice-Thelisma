@@ -38,7 +38,7 @@ const SignUp = () => {
   }
 
   return(
- <main className=" items-center justify-center overflow-y-auto lg:flex lg:overflow-y-clip">
+ <main className="bg-graidnt_bg items-center justify-center overflow-y-auto lg:flex lg:overflow-y-clip">
       <div className="h-auto  self-start w-full   bg-[#FBECF] sticky lg:flex lg:h-screen lg:items-center lg:w-[45%] ">
         <SectionHeader
           className="text-center md:px-[31px] lg:text-left lg:px-[10%]"
@@ -77,7 +77,7 @@ const SignUp = () => {
               </div>
             </div>
           </div>
-          <Button className='bg-primary_color text-white py-4 text-[1.2rem] mt-9 ' children={"Create acount"} /> 
+          <Button className='bg-primary_color text-white py-4 text-[1.2rem] mt-9  '  >Create acount</Button> 
         </form>
         
       </section>

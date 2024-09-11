@@ -46,7 +46,7 @@ const Input = ({
       <input
         disabled={disabled}
         className={cn(
-          "border-b-[3px]  border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px] w-full mt-[12px] hj-[28px] text-[1.1rem] outline-0 ",
+          "border-b-[3px] bg-transparent  border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px] w-full mt-[12px] hj-[28px] text-[1.1rem] outline-0 ",
           inputClassName,
           disabled ? "opacity-60" : ""
         )}
