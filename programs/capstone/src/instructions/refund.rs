@@ -4,7 +4,6 @@ use crate::{
     state::{
         Contributor,
         Fundraiser,
-        Vault,
     },
     FundraiserError,
 };
@@ -27,10 +26,6 @@ pub struct Refund<'info> {
         close = contributor,
     )]
     pub contributor_account: Account<'info, Contributor>,
-    #[account(
-        mut,
-    )]
-    pub vault: Account<'info, Vault>,
     pub system_program: Program<'info, System>,
 }
 
@@ -56,7 +51,7 @@ impl<'info> Refund<'info> {
 
         // Transfer the funds from the vault to the contributor
         let cpi_accounts = Transfer {
-            from: self.vault.to_account_info(),
+            from: self.fundraiser.to_account_info(),
             to: self.contributor_account.to_account_info(),
         };
 

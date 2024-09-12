@@ -4,7 +4,6 @@ use crate::{
     state::{
         Contributor,
         Fundraiser,
-        Vault,
     },
     FundraiserError,
     ANCHOR_DISCRIMINATOR,
@@ -28,10 +27,6 @@ pub struct Contribute<'info> {
         space = ANCHOR_DISCRIMINATOR + Contributor::INIT_SPACE,
     )]
     pub contributor_account: Account<'info, Contributor>,
-    #[account(
-        mut,
-    )]
-    pub vault: Account<'info, Vault>,
     pub system_program: Program<'info, System>,
 }
 
@@ -52,7 +47,7 @@ impl<'info> Contribute<'info> {
         // Transfer the funds from the contributor to the vault
         let cpi_accounts = Transfer {
             from: self.contributor_account.to_account_info(),
-            to: self.vault.to_account_info(),
+            to: self.fundraiser.to_account_info(),
         };
 
         // Crete a CPI context

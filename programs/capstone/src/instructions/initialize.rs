@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
 use crate::{
-    state::{Fundraiser, Vault}, ANCHOR_DISCRIMINATOR,
+    state::{Fundraiser}, ANCHOR_DISCRIMINATOR,
 };
 
 #[derive(Accounts)]
@@ -16,12 +16,6 @@ pub struct Initialize<'info> {
         space = ANCHOR_DISCRIMINATOR + Fundraiser::INIT_SPACE,
     )]
     pub fundraiser: Account<'info, Fundraiser>,
-    #[account(
-        init,
-        payer = maker,
-        space = ANCHOR_DISCRIMINATOR + Vault::INIT_SPACE,
-    )]
-    pub vault: Account<'info, Vault>,
     pub system_program: Program<'info, System>,
 }
 
