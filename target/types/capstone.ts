@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/capstone.json`.
  */
 export type Capstone = {
-  "address": "kQCXgZfU3WNRyASyjmHgTi6ZJNPv24u3aqs3m58c46d",
+  "address": "EnWowVGkXJuEZtqPnjDt8mnB2gMhGvv7Kzs7Zyo7jjj6",
   "metadata": {
     "name": "capstone",
     "version": "0.1.0",
@@ -57,10 +57,6 @@ export type Capstone = {
               }
             ]
           }
-        },
-        {
-          "name": "vault",
-          "writable": true
         },
         {
           "name": "systemProgram",
@@ -148,10 +144,6 @@ export type Capstone = {
           }
         },
         {
-          "name": "vault",
-          "writable": true
-        },
-        {
           "name": "systemProgram",
           "address": "11111111111111111111111111111111"
         }
@@ -207,11 +199,6 @@ export type Capstone = {
               }
             ]
           }
-        },
-        {
-          "name": "vault",
-          "writable": true,
-          "signer": true
         },
         {
           "name": "systemProgram",
@@ -310,10 +297,6 @@ export type Capstone = {
           }
         },
         {
-          "name": "vault",
-          "writable": true
-        },
-        {
           "name": "systemProgram",
           "address": "11111111111111111111111111111111"
         }
@@ -346,19 +329,6 @@ export type Capstone = {
         131,
         204,
         196
-      ]
-    },
-    {
-      "name": "vault",
-      "discriminator": [
-        211,
-        8,
-        232,
-        43,
-        2,
-        152,
-        117,
-        119
       ]
     }
   ],
@@ -423,13 +393,6 @@ export type Capstone = {
             "type": "u8"
           }
         ]
-      }
-    },
-    {
-      "name": "vault",
-      "type": {
-        "kind": "struct",
-        "fields": []
       }
     }
   ]

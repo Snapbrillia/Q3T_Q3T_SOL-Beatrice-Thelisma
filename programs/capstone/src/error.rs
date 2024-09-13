@@ -2,6 +2,8 @@ use anchor_lang::error_code;
 
 #[error_code]
 pub enum FundraiserError {
+    #[msg("The deadline must be in the future")]
+    DeadlinePast,
     #[msg("The amount to raise has not been met")]
     TargetNotMet,
     #[msg("The amount to raise has been achieved")]

@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("kQCXgZfU3WNRyASyjmHgTi6ZJNPv24u3aqs3m58c46d");
+declare_id!("EnWowVGkXJuEZtqPnjDt8mnB2gMhGvv7Kzs7Zyo7jjj6");
 
 mod state;
 mod instructions;
@@ -16,6 +16,14 @@ pub mod capstone {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>, amount: u64, deadline: i64) -> Result<()> {
+
+        // Check that deadline is in the future
+        let current_time = Clock::get()?.unix_timestamp;
+ 
+        require!(
+            deadline > current_time,
+            FundraiserError::DeadlinePast
+        );
 
         ctx.accounts.initialize(amount, deadline, &ctx.bumps)?;
 

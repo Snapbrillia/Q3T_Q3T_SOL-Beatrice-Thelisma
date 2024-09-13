@@ -1,5 +1,5 @@
 {
-  "address": "kQCXgZfU3WNRyASyjmHgTi6ZJNPv24u3aqs3m58c46d",
+  "address": "EnWowVGkXJuEZtqPnjDt8mnB2gMhGvv7Kzs7Zyo7jjj6",
   "metadata": {
     "name": "capstone",
     "version": "0.1.0",
@@ -51,10 +51,6 @@
               }
             ]
           }
-        },
-        {
-          "name": "vault",
-          "writable": true
         },
         {
           "name": "system_program",
@@ -142,10 +138,6 @@
           }
         },
         {
-          "name": "vault",
-          "writable": true
-        },
-        {
           "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
@@ -201,11 +193,6 @@
               }
             ]
           }
-        },
-        {
-          "name": "vault",
-          "writable": true,
-          "signer": true
         },
         {
           "name": "system_program",
@@ -304,10 +291,6 @@
           }
         },
         {
-          "name": "vault",
-          "writable": true
-        },
-        {
           "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
@@ -340,19 +323,6 @@
         131,
         204,
         196
-      ]
-    },
-    {
-      "name": "Vault",
-      "discriminator": [
-        211,
-        8,
-        232,
-        43,
-        2,
-        152,
-        117,
-        119
       ]
     }
   ],
@@ -417,13 +387,6 @@
             "type": "u8"
           }
         ]
-      }
-    },
-    {
-      "name": "Vault",
-      "type": {
-        "kind": "struct",
-        "fields": []
       }
     }
   ]

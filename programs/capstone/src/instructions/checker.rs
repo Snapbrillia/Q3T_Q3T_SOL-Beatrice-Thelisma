@@ -1,7 +1,7 @@
 use anchor_lang::{prelude::*, system_program::{transfer, Transfer}};
 
 use crate::{
-    state::{Fundraiser, Vault},
+    state::{Fundraiser},
     FundraiserError,
 };
 
@@ -16,15 +16,19 @@ pub struct CheckContributions<'info> {
         close = maker,
     )]
     pub fundraiser: Account<'info, Fundraiser>,
-    #[account(
-        mut,
-    )]
-    pub vault: Account<'info, Vault>,
     pub system_program: Program<'info, System>,
 }
 
 impl<'info> CheckContributions<'info> {
     pub fn check_contributions(&self) -> Result<()> {
+
+        // Check if the fundraising duration has been reached
+        let current_time = Clock::get()?.unix_timestamp;
+ 
+        require!(
+            self.fundraiser.deadline <= current_time,
+            FundraiserError::FundraiserNotEnded
+        );
 
         // Check if the target amount has been met
         require!(
@@ -38,7 +42,7 @@ impl<'info> CheckContributions<'info> {
 
         // Transfer the funds from the vault to the maker
         let cpi_accounts = Transfer {
-            from: self.vault.to_account_info(),
+            from: self.fundraiser.to_account_info(),
             to: self.maker.to_account_info(),
         };
 
@@ -53,7 +57,7 @@ impl<'info> CheckContributions<'info> {
         let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, &signer_seeds);
 
         // Transfer the funds from the vault to the maker
-        transfer(cpi_ctx, self.vault.get_lamports())?;
+        transfer(cpi_ctx, self.fundraiser.get_lamports())?;
 
         Ok(())
     }
