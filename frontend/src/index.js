@@ -1,12 +1,13 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import "./index.css";
-import Home from "./contributor/Home.tsx";
-import Donate from "./contributor/donate.tsx";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Connectors from "./contributor/connector.tsx";
-import { Buffer } from 'buffer';
-window.Buffer = Buffer;
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App.tsx';
+import Home from './contributor/Home.tsx';
+import Donate from './contributor/donate.tsx';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,18 @@ const router = createBrowserRouter([
     element: (
       <Donate />
     ),
+  },
+  {
+    path: "dashboard",
+    element: <Dashboard />,
+  },
+  {
+    path: "/auth/sign-up",
+    element: <SignUp />,
+  },
+  {
+    path: "/auth/sign-in",
+    element: <SignIn />,
   },
 ]);
 

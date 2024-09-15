@@ -1,6 +1,17 @@
 use anchor_lang::{ prelude::*, system_program::{ transfer, Transfer } };
 
+<<<<<<< HEAD
 use crate::{ state::{ Contributor, Fundraiser, Vault }, FundraiserError, ANCHOR_DISCRIMINATOR };
+=======
+use crate::{
+    state::{
+        Contributor,
+        Fundraiser,
+    },
+    FundraiserError,
+    ANCHOR_DISCRIMINATOR,
+};
+>>>>>>> 1dfab7b3380d9b1a7e377787515c69355a3aa2c5
 
 #[derive(Accounts)]
 pub struct Contribute<'info> {
@@ -20,10 +31,6 @@ pub struct Contribute<'info> {
         space = ANCHOR_DISCRIMINATOR + Contributor::INIT_SPACE
     )]
     pub contributor_account: Account<'info, Contributor>,
-    #[account(
-        mut,
-    )]
-    pub vault: Account<'info, Vault>,
     pub system_program: Program<'info, System>,
 }
 
@@ -39,8 +46,13 @@ impl<'info> Contribute<'info> {
 
         // Transfer the funds from the contributor to the vault
         let cpi_accounts = Transfer {
+<<<<<<< HEAD
             from: self.contributor.to_account_info(),
             to: self.vault.to_account_info(),
+=======
+            from: self.contributor_account.to_account_info(),
+            to: self.fundraiser.to_account_info(),
+>>>>>>> 1dfab7b3380d9b1a7e377787515c69355a3aa2c5
         };
 
         // Crete a CPI context
