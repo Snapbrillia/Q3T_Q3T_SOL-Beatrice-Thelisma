@@ -1,14 +1,6 @@
-use anchor_lang::{prelude::*, system_program::{transfer, Transfer}};
+use anchor_lang::{ prelude::*, system_program::{ transfer, Transfer } };
 
-use crate::{
-    state::{
-        Contributor,
-        Fundraiser,
-        Vault,
-    },
-    FundraiserError,
-    ANCHOR_DISCRIMINATOR,
-};
+use crate::{ state::{ Contributor, Fundraiser, Vault }, FundraiserError, ANCHOR_DISCRIMINATOR };
 
 #[derive(Accounts)]
 pub struct Contribute<'info> {
@@ -25,7 +17,7 @@ pub struct Contribute<'info> {
         payer = contributor,
         seeds = [b"contributor", fundraiser.key().as_ref(), contributor.key().as_ref()],
         bump,
-        space = ANCHOR_DISCRIMINATOR + Contributor::INIT_SPACE,
+        space = ANCHOR_DISCRIMINATOR + Contributor::INIT_SPACE
     )]
     pub contributor_account: Account<'info, Contributor>,
     #[account(
@@ -37,13 +29,9 @@ pub struct Contribute<'info> {
 
 impl<'info> Contribute<'info> {
     pub fn contribute(&mut self, amount: u64) -> Result<()> {
-
         // Check if the fundraising duration has been reached
         let current_time = Clock::get()?.unix_timestamp;
-        require!(
-            self.fundraiser.deadline >= current_time,
-            FundraiserError::FundraiserEnded
-        );
+        require!(self.fundraiser.deadline >= current_time, FundraiserError::FundraiserEnded);
 
         // Transfer the funds to the vault
         // CPI to the token program to transfer the funds
@@ -51,7 +39,7 @@ impl<'info> Contribute<'info> {
 
         // Transfer the funds from the contributor to the vault
         let cpi_accounts = Transfer {
-            from: self.contributor_account.to_account_info(),
+            from: self.contributor.to_account_info(),
             to: self.vault.to_account_info(),
         };
 

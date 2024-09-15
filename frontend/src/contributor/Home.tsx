@@ -3,28 +3,33 @@ import { CSSTransition } from "react-transition-group";
 import anime from "animejs";
 import "./home.css"; // Your styles will go here
 import WalletConnectButton from "./connectWalletButton.tsx";
+import items from "./data.json";
 
 export default function Home() {
   const [activeNum, setActiveNum] = useState(0);
   const [show, setShow] = useState<boolean>(true);
   const nodeRef = useRef(null);
 
-  const items = [
-    {
-      backgroundImage: "https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=86d24240ca6b1df611e98ed6bd7a1efc&auto=format&fit=crop&w=1400&q=80",
-      mainTitle: "Help Us!",
-      description: "You know what to do. We know you know.",
-      content:
-        "Why not help us build those super warm fortresses for our little friends!? Winter is coming and they need that money to buy that wood, insulation and tools.",
-    },
-    {
-      backgroundImage: "https://plus.unsplash.com/premium_photo-1681140560925-a50f402b8525?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      mainTitle: "Help New!",
-      description: "You know what to do. We know you know. nEW",
-      content:
-        "Why not help us build those super warm fortresses for our little friends!? Winter is coming and they need that money to buy that wood, insulation and tools.",
-    },
-  ];
+  // const items = [
+  //   {
+  //     id: 1,
+  //     backgroundImage:
+  //       "https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=86d24240ca6b1df611e98ed6bd7a1efc&auto=format&fit=crop&w=1400&q=80",
+  //     mainTitle: "Help Us!",
+  //     description: "You know what to do. We know you know.",
+  //     content:
+  //       "Why not help us build those super warm fortresses for our little friends!? Winter is coming and they need that money to buy that wood, insulation and tools.",
+  //   },
+  //   {
+  //     id: 2,
+  //     backgroundImage:
+  //       "https://plus.unsplash.com/premium_photo-1681140560925-a50f402b8525?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  //     mainTitle: "Help New!",
+  //     description: "You know what to do. We know you know. nEW",
+  //     content:
+  //       "Why not help us build those super warm fortresses for our little friends!? Winter is coming and they need that money to buy that wood, insulation and tools.",
+  //   },
+  // ];
 
   const enterAnimation = (el: number) => {
     anime({
@@ -92,19 +97,18 @@ export default function Home() {
       >
         {show ? (
           <div>
-            <div className="crowd-funding__header" ref={nodeRef} style={{
-              backgroundImage: `linear-gradient(rgba(200, 70, 87, 0.3), rgba(133, 54, 95, 0.8)), url(${items[activeNum].backgroundImage})`,
-              // linear-gradient(rgba(133, 54, 95, 0.8), rgba(200, 70, 87, 0.8))
-            }}>
+            <div
+              className="crowd-funding__header"
+              ref={nodeRef}
+              style={{
+                backgroundImage: `linear-gradient(rgba(200, 70, 87, 0.3), rgba(133, 54, 95, 0.8)), url(${items[activeNum].backgroundImage})`,
+                // linear-gradient(rgba(133, 54, 95, 0.8), rgba(200, 70, 87, 0.8))
+              }}
+            >
               <div className="crowd-funding__header__description">
-                <h1>HELP!</h1>
-                <p>
-                  Spark, Flash and Buddy want to sleep in a comfy dog house this
-                  winter.
-                </p>
-                <div className="hashtags">
-                  #puppy #crowdfunding #winter #dogs #help
-                </div>
+                <h1>{items[activeNum].title}</h1>
+                <p>{items[activeNum].aim}</p>
+                <div className="hashtags">{items[activeNum].tag}</div>
               </div>
 
               <div className="crowd-funding__header__details">
@@ -133,7 +137,7 @@ export default function Home() {
                 <div className="button">
                   <strong>
                     <small>
-                      <a href={`donate/`}>
+                      <a href={`donate/${items[activeNum].id - 1}`}>
                         donate now
                       </a>
                     </small>
@@ -154,18 +158,12 @@ export default function Home() {
                   decide:
                 </h4>
                 <ul>
-                  <li className="list-content">
+                  {/* <li className="list-content">
                     Why should you care? Who knows.
-                  </li>
-                  <li className="list-content">
-                    Why should you care? Who knows.
-                  </li>
-                  <li className="list-content">
-                    Why should you care? Who knows.
-                  </li>
-                  <li className="list-content">
-                    Why should you care? Who knows.
-                  </li>
+                  </li> */}
+                  {items[activeNum]?.whyCareList?.map((val: any) => (
+                    <li className="list-content">{val}</li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -185,12 +183,17 @@ export default function Home() {
       ></span>
       <div className="inspired-by">
         <a target="_blank" href="#">
-          <small>By Grav.Id <strong>team</strong> for</small>
+          <small>
+            By Grav.Id <strong>team</strong> for
+          </small>
         </a>
         <a className="second-link" target="_blank" href="#">
-          <small> Solana <strong>WBA capstone project</strong></small>
+          <small>
+            {" "}
+            Solana <strong>WBA capstone project</strong>
+          </small>
         </a>
       </div>
     </div>
   );
-};
+}

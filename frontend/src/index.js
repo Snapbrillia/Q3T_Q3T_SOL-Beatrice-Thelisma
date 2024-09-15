@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App.tsx";
 import Home from "./contributor/Home.tsx";
 import Donate from "./contributor/donate.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Connectors from "./contributor/connector.tsx";
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
 
 const router = createBrowserRouter([
   {
@@ -13,11 +14,9 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "donate",
+    path: "donate/:id",
     element: (
-      <Connectors>
-        <Donate />
-      </Connectors>
+      <Donate />
     ),
   },
 ]);
@@ -25,6 +24,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Connectors>
+      <RouterProvider router={router} />
+    </Connectors>
   </React.StrictMode>
 );

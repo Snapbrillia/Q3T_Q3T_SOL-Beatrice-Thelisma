@@ -5,6 +5,8 @@ import IDL from "./capstone.json";
 import { Buffer } from "buffer";
 import VaultWallet from './vault.json'
 
+
+
 export default async function initialize(
   connectedPublicKey: PublicKey,
   provider: any,
@@ -34,10 +36,8 @@ export default async function initialize(
   };
 
   const initialize = async () => {
-    const deadline = Math.floor(new Date("2024-9-31").getTime() / 1000);
-
     const initInstruction = await program.methods
-      .initialize(new anchor.BN(30000000), new anchor.BN(deadline))
+      .check_contributions()
       .accountsPartial({
         maker: baseAccount.publicKey, // baseAccount as maker
         fundraiser: fundraiser,
