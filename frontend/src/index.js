@@ -10,7 +10,9 @@ import {
 } from "react-router-dom";
 import SignUp from './fundraiser/pages/SignUp.tsx';
 import SignIn from './fundraiser/pages/SignIn.tsx';
+import ViewCampaign from "./fundraiser/pages/ViewCampaign.tsx";
 import Dashboard from './fundraiser/pages/Dashboard.tsx';
+import CreateCampaign from './fundraiser/pages/CreateCampaign.tsx';
 
 const router = createBrowserRouter([
   {
@@ -22,8 +24,16 @@ const router = createBrowserRouter([
     element: <Donate />,
   },
   {
-    path: "dashboard",
+    path: "/dashboard",
     element: <Dashboard />,
+  },
+    {
+    path: "/create-campaign",
+    element: <CreateCampaign />,
+  },
+    {
+    path: "/dashboard/:campaignID",
+    element: <ViewCampaign />,
   },
   {
     path: "/auth/sign-up",

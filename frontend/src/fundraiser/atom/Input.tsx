@@ -15,7 +15,7 @@ interface InputProp {
   value: string;
   required?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  disabled?: boolean;
+  disabled?: boolean;min?:number|string;
 }
 const Input = ({
   className,
@@ -30,6 +30,7 @@ const Input = ({
   value,
   required,
   onChange,
+  min,
   disabled,
 }: InputProp) => {
   return (
@@ -45,8 +46,9 @@ const Input = ({
       </label>
       <input
         disabled={disabled}
+        min={min}
         className={cn(
-          "border-b-[3px] bg-transparent  border-[#808080] pt-4 pb-0 rounded-[4px] pl-[10px] pr-[5px] w-full mt-[12px] hj-[28px] text-[1.1rem] outline-0 ",
+          "border-b-[3px] bg-transparent  border-[#808080] pt-4 pb-0 rounded-[4px] pl-[10px] pr-[5px] w-full mt-[2px] hj-[28px] text-[1.1rem] outline-0 ",
           inputClassName,
           disabled ? "opacity-60" : ""
         )}
