@@ -46,7 +46,7 @@ impl<'info> Contribute<'info> {
 
         // Transfer the funds from the contributor to the vault
         let cpi_accounts = Transfer {
-            from: self.contributor_account.to_account_info(),
+            from: self.contributor.to_account_info(),
             to: self.fundraiser.to_account_info(),
         };
 
