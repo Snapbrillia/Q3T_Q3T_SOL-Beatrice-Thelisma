@@ -8,6 +8,10 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Connectors from './contributor/connector.tsx';
+import Dashboard from './fundraiser/pages/Dashboard.tsx';
+import SignUp from './fundraiser/pages/SignUp.tsx';
+import SignIn from './fundraiser/pages/SignIn.tsx';
 
 const router = createBrowserRouter([
   {
