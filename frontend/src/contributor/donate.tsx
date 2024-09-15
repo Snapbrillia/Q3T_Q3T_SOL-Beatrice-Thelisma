@@ -3,14 +3,14 @@ import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
 import { clusterApiUrl, Connection } from "@solana/web3.js";
 import * as anchor from "@coral-xyz/anchor";
 import WalletConnectButton from "./connectWalletButton";
-import initialize from "./utils/initialize";
 import "./donate.css";
 import importedWallet from "./utils/wallet.json";
 import { useParams } from "react-router-dom";
 // import saveFile from "./utils/saveFile";
 import itemsList from "./data.json";
-import { Bounce, toast } from "react-toastify";
+// import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import createContribution from "./utils/contribute";
 
 interface Campaign {
   id: number;
@@ -60,20 +60,20 @@ export default function Donate() {
     return provider;
   }
 
-  const initialzeVault = async () => {
+  const contribute = async () => {
     if (publicKey && wallet) {
-      await initialize(publicKey, getProvider(), baseAccount);
-      toast.success("Account Initialization Successful", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      await createContribution(publicKey, getProvider(), baseAccount);
+      // toast.success("Account Initialization Successful", {
+      //   position: "top-right",
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "light",
+      //   transition: Bounce,
+      // });
     } else {
       console.log("failed to initialize and load wallet");
     }
@@ -120,7 +120,7 @@ export default function Donate() {
               <span className="content">{items[parsedId].description}</span>
               <span className="content">{items[parsedId].content}</span>
               <div className="button">
-                <strong onClick={() => initialzeVault()}>
+                <strong onClick={() => contribute()}>
                   <small>donate now</small>
                 </strong>
               </div>

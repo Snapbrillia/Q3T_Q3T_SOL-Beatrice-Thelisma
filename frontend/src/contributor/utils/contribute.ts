@@ -6,7 +6,7 @@ import { Buffer } from "buffer";
 import VaultWallet from './vault.json'
 
 
-export default async function initialize(
+export default async function createContribution(
     connectedPublicKey: PublicKey,
     provider: any,
     baseAccount: any,
