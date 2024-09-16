@@ -2,6 +2,33 @@ import React, { useState } from "react";
 import Button from "../atom/Button";
 import SectionHeader from "../atom/SectionHeader";
 import Input from "../atom/Input";
+import { getAllCampaigns, createCampaign } from "../../api/campaign";
+import { Campaign } from "../../api/types";
+import "./style.css";
+import { FaCopy } from "react-icons/fa6";
+import * as LottiePlayer from "@lottiefiles/lottie-player";
+
+// how to create funraiser
+
+// const handleCreateCampaign = async () => {
+//   const newCampaign = {
+//     title: 'New Campaign',
+//     description: 'This is a new campaign',
+//     targetAmount: 10000,
+
+//     endDate: '2024-10-16',
+//     tags: "",
+//     whyCare: [],
+
+//   };
+
+//   try {
+//     const createdCampaign = await createCampaign(newCampaign);
+//     setCampaigns([...campaigns, createdCampaign]);
+//   } catch (error) {
+//     console.error('Error creating campaign:', error);
+//   }
+// };
 
 const CreateCampaign = () => {
   const initialData = {
@@ -10,18 +37,19 @@ const CreateCampaign = () => {
     targetAmount: "",
     whyCare: "",
     deadline: "",
-    organizationRegNum: "",
-    organizationWebsite: "",
-    walletAddress: "",
-    organizationMission: "",
+    hashtags: "",
+    uploadFile: "",
   };
   const [inputValue, setInputValue] = useState<any>(initialData);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [copiedPublicKey, setCopiedPublicKey] = useState<boolean>(false);
+  const [copiedPrivateKey, setCopiedPrivateKey] = useState<boolean>(false);
   const handleChanges = (
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setInputValue((prev) => {
+    setInputValue((prev: any) => {
       return {
         ...prev,
         [e.target.name]: e.target.value,
@@ -31,13 +59,20 @@ const CreateCampaign = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    const whyCareArray = inputValue.whyCare.split("|");
+    const hashTagsArray = inputValue.hashtags.split("#");
+
+    setInputValue((inputValue.whyCare = whyCareArray));
+    setInputValue((inputValue.hashtags = hashTagsArray.slice(1)));
 
     console.log(inputValue);
   };
 
   return (
-    <main className=" items-center justify-center overflow-y-auto lg:flex lg:overflow-y-clip">
-      <div className="h-auto  self-start w-full   bg-[#FBECF] sticky lg:flex lg:h-screen lg:items-center lg:w-[45%] ">
+    //  <main className=" items-center justify-center overflow-y-auto lg:flex lg:overflow-y-clip">
+    <main className="bg-graidnt_bg items-center w-[90vw] justify-center overflow-y-auto lg:flex lg:overflow-y-clip">
+      <div className="h-auto  sself-start w-full   bg-[#FBECF] sticky lg:flex flex-col itfems-center  dlg:h-screen  md:px-[31px] lg:text-left lg:px-[3%] lg:w-[45%] ">
+        {/* <div className="h-auto  self-start w-full   bg-[#FBECF] sticky lg:flex lg:h-screen lg:items-center lg:w-[45%] "> */}
         <SectionHeader
           // className="text-center md:px-[31px] lg:text-left lg:px-[10%]"
           headingChildren={"Create your campaign"}
@@ -64,13 +99,34 @@ const CreateCampaign = () => {
                 Campaign Title<span className="font-bold text-red-500">*</span>
               </>
             }
-            value={inputValue.organizationName}
+            value={inputValue.campaignTitle}
             onChange={handleChanges}
           />
+
+          <div className="my-[16px]">
+            <label
+              className="block  text-[#3E3E3E] text-[1rem]  md:[1.3rem]"
+              htmlFor="campaignDescription"
+            >
+              Campaign description
+              <span className="font-bold text-red-500">*</span>
+            </label>
+
+            <textarea
+              rows={2}
+              required
+              className="w-full border-b-[3px] bg-transparent border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px]  mt-[12px]  text-[1.1rem] outline-0 "
+              value={inputValue.campaignDescription}
+              onChange={handleChanges}
+              name="campaignDescription"
+              id="campaignDescription"
+            ></textarea>
+          </div>
           <Input
             id="targetAmount"
             name="targetAmount"
             type="number"
+            min={"0"}
             className="mt-4"
             htmlFor="targetAmount"
             label={
@@ -83,9 +139,30 @@ const CreateCampaign = () => {
                 </i>{" "}
               </>
             }
-            value={inputValue.email}
+            value={inputValue.targetAmount}
             onChange={handleChanges}
           />
+          <div className="my-[16px]">
+            <label
+              className="block  text-[#3E3E3E] text-[1rem]  md:[1.3rem]"
+              htmlFor="whyCare"
+            >
+              <div className="">
+                Why should do you need to fundraise
+                <span className="font-bold text-red-500">*</span>
+              </div>
+              <i>Separate each reason with '|'</i>
+            </label>
+            <textarea
+              rows={2}
+              required
+              className="w-full border-b-[3px] bg-transparent border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px]  mt-[12px]  text-[1.1rem] outline-0 "
+              value={inputValue.whyCare}
+              onChange={handleChanges}
+              name="whyCare"
+              id="whyCare"
+            ></textarea>
+          </div>
           <Input
             id="deadline"
             name="deadline"
@@ -98,7 +175,24 @@ const CreateCampaign = () => {
                 <span className="font-bold text-red-500">*</span>
               </>
             }
-            value={inputValue.telNum}
+            value={inputValue.deadline}
+            onChange={handleChanges}
+          />
+          <Input
+            id="hashtags"
+            name="hashtags"
+            type="text"
+            className="mt-4"
+            htmlFor="hashtags"
+            label={
+              <>
+                <div className="">
+                  Hashtags<span className="font-bold text-red-500">*</span>
+                </div>
+                <i>Add as many tags as you want</i>
+              </>
+            }
+            value={inputValue.hashtags}
             onChange={handleChanges}
           />
           <Input
@@ -114,7 +208,7 @@ const CreateCampaign = () => {
                 <span className="font-bold text-red-500">*</span>
               </>
             }
-            value={inputValue.organizationRegNum}
+            value={inputValue.uploadFile}
             onChange={handleChanges}
           />
           {/* <Input id='organizationWebsite' name='organizationWebsite' type='text' className='mt-4' htmlFor='organizationWebsite' label={<>Organization Website<span className='font-bold text-red-500'>*</span></>} value={inputValue.organizationWebsite} onChange={handleChanges} /> */}
@@ -123,10 +217,9 @@ const CreateCampaign = () => {
             <label className='block  text-[#3E3E3E] text-[1rem]  md:[1.3rem]' htmlFor="organizationMission">Organization mission<span className='font-bold text-red-500'>*</span></label>
             <textarea rows={5}  className='w-full border-b-[3px]  border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px]  mt-[12px]  text-[1.1rem] outline-0 ' value={inputValue.organizationMission} onChange={handleChanges} name="organizationMission" id="organizationMission"></textarea>
           </div> */}
-          <Button
-            className="bg-primary_color text-white py-4 text-[1.2rem] mt-3 "
-            children={"Create acount"}
-          />
+          <Button className="bg-primary_color text-white py-4 text-[1.2rem] mt-3 ">
+            Create campaign
+          </Button>
         </form>
       </section>
       {showDetails && (
