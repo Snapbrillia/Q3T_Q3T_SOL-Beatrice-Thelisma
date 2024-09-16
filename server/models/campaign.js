@@ -23,6 +23,8 @@ const CampaignSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
+    tag: String,
+    whyCare: [],
     endDate: {
         type: Date,
         default: Date.now,

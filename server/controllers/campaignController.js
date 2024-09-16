@@ -6,7 +6,7 @@ const User = require('../models/user');
 // @desc    Create a new campaign
 // @access  Private
 const createCampaign = async (req, res) => {
-    const { title, description, targetAmount, endDate } = req.body;
+    const { title, description, targetAmount, endDate, whyCare, tag, } = req.body;
 
     try {
         // Create a new campaign
@@ -15,6 +15,8 @@ const createCampaign = async (req, res) => {
             description,
             targetAmount,
             endDate,
+            tag,
+            whyCare,
             creator: req.user._id, // User is added to request by the auth middleware
         });
 
