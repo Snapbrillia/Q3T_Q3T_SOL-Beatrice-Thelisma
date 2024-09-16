@@ -13,26 +13,6 @@ interface AuthResponse {
   refreshToken: string;
 }
 
-export const login = async (credentials: RegisterRequest): Promise<AuthResponse> => {
-  const { data } = await apiClient.post('/auth/login', credentials);
-
-  // Save tokens to localStorage
-  localStorage.setItem('accessToken', data.accessToken);
-  localStorage.setItem('refreshToken', data.refreshToken);
-
-  return data;
-};
-
-export const register = async (credentials: RegisterRequest): Promise<AuthResponse> => {
-  const { data } = await apiClient.post('/auth/register', credentials);
-
-  // Save tokens to localStorage
-  localStorage.setItem('accessToken', data.accessToken);
-  localStorage.setItem('refreshToken', data.refreshToken);
-
-  return data;
-};
-
 export const signup = async (credentials: RegisterRequest): Promise<AuthResponse> => {
   const { data } = await apiClient.post('/auth/signup', credentials);
   

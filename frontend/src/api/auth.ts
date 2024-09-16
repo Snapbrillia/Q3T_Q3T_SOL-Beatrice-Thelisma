@@ -22,16 +22,6 @@ export const login = async (credentials: LoginRequest): Promise<LoginResponse> =
   return data;
 };
 
-export const signup = async (credentials: LoginRequest): Promise<LoginResponse> => {
-  const { data } = await apiClient.post('/auth/signup', credentials);
-  
-  // Save tokens to localStorage
-  localStorage.setItem('accessToken', data.accessToken);
-  localStorage.setItem('refreshToken', data.refreshToken);
-
-  return data;
-};
-
 export const logout = () => {
   // Clear tokens from localStorage
   localStorage.removeItem('accessToken');
