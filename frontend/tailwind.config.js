@@ -9,8 +9,11 @@ module.exports = {
         blk_graet_bg:"linear-gradient(0deg, #000000 0%, rgba(0, 0, 0, 0) 100%)",
         blkGradient: "linear-gradient(0deg, #000000 0%, rgba(0, 0, 0, 0) 100%)",
         graidnt_bg:"linear-gradient(to top right, #d5888c, #fdfafa 23%, #fdfafa 100%, #85365f);",
-        color_gradient: "linear-gradient(rgba(200, 70, 87, 0.3), rgba(133, 54, 95, 0.8)), url(https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=86d24240ca6b1df611e98ed6bd7a1efc&auto=format&fit=crop&w=1400&q=80)",
+        transparent_bg: "linear-gradient(220deg,#FFC20008 , #d5888c, #d5888c)",
+
+        color_gradient: "linear-gradient(rgba(200, 70, 87, 0.3), rgba(133, 54, 95, 0.8))",
         progress_bar:"linear-gradient(to right, #fff 40%, transparent 40%);",
+
       },
       colors:{
         "primary_color":"#85365f",

@@ -3,3 +3,8 @@ declare module '*.png' {
     export default value;
   }
   
+declare namespace JSX {
+  interface IntrinsicElements {
+    "lottie-player": any;
+  }
+}
