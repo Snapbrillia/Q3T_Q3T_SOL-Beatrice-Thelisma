@@ -2,24 +2,46 @@ import React, { useState } from "react";
 import Button from "../atom/Button";
 import SectionHeader from "../atom/SectionHeader";
 import Input from "../atom/Input";
-import "./style.css"
+import { getAllCampaigns, createCampaign } from "../../api/campaign";
+import { Campaign } from "../../api/types";
+import "./style.css";
 import { FaCopy } from "react-icons/fa6";
 import * as LottiePlayer from "@lottiefiles/lottie-player";
+
+// how to create funraiser
+
+// const handleCreateCampaign = async () => {
+//   const newCampaign = {
+//     title: 'New Campaign',
+//     description: 'This is a new campaign',
+//     targetAmount: 10000,
+
+//     endDate: '2024-10-16',
+//     tags: "",
+//     whyCare: [],
+
+//   };
+
+//   try {
+//     const createdCampaign = await createCampaign(newCampaign);
+//     setCampaigns([...campaigns, createdCampaign]);
+//   } catch (error) {
+//     console.error('Error creating campaign:', error);
+//   }
+// };
 
 const CreateCampaign = () => {
   const initialData = {
     campaignTitle: "",
     campaignDescription: "",
     targetAmount: "",
-    whyCare:"",
+    whyCare: "",
     deadline: "",
     hashtags: "",
     uploadFile: "",
   };
-  const [inputValue, setInputValue] = useState<any>(
-    initialData
-  );
-   const [showDetails, setShowDetails] = useState<boolean>(false)
+  const [inputValue, setInputValue] = useState<any>(initialData);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
   const [copiedPublicKey, setCopiedPublicKey] = useState<boolean>(false);
   const [copiedPrivateKey, setCopiedPrivateKey] = useState<boolean>(false);
   const handleChanges = (
@@ -27,7 +49,7 @@ const CreateCampaign = () => {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setInputValue((prev:any) => {
+    setInputValue((prev: any) => {
       return {
         ...prev,
         [e.target.name]: e.target.value,
@@ -37,11 +59,11 @@ const CreateCampaign = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    const whyCareArray = inputValue.whyCare.split('|');
-    const hashTagsArray = inputValue.hashtags.split('#');
+    const whyCareArray = inputValue.whyCare.split("|");
+    const hashTagsArray = inputValue.hashtags.split("#");
 
-    setInputValue(inputValue.whyCare=whyCareArray)
-    setInputValue(inputValue.hashtags=hashTagsArray.slice(1))
+    setInputValue((inputValue.whyCare = whyCareArray));
+    setInputValue((inputValue.hashtags = hashTagsArray.slice(1)));
 
     console.log(inputValue);
   };
@@ -66,7 +88,6 @@ const CreateCampaign = () => {
           // action={signUpNewUsers}
           onSubmit={handleSubmit}
         >
-          
           <Input
             id="campaignTitle"
             name="campaignTitle"
@@ -81,8 +102,8 @@ const CreateCampaign = () => {
             value={inputValue.campaignTitle}
             onChange={handleChanges}
           />
-          
-           <div className="my-[16px]">
+
+          <div className="my-[16px]">
             <label
               className="block  text-[#3E3E3E] text-[1rem]  md:[1.3rem]"
               htmlFor="campaignDescription"
@@ -90,7 +111,7 @@ const CreateCampaign = () => {
               Campaign description
               <span className="font-bold text-red-500">*</span>
             </label>
-          
+
             <textarea
               rows={2}
               required
@@ -105,7 +126,7 @@ const CreateCampaign = () => {
             id="targetAmount"
             name="targetAmount"
             type="number"
-            min={'0'}
+            min={"0"}
             className="mt-4"
             htmlFor="targetAmount"
             label={
@@ -114,7 +135,7 @@ const CreateCampaign = () => {
                   Target amount<span className="font-bold text-red-500">*</span>
                 </div>
                 <i>
-                  Write down the amount you intend raising for this campaign 
+                  Write down the amount you intend raising for this campaign
                 </i>{" "}
               </>
             }
@@ -165,9 +186,9 @@ const CreateCampaign = () => {
             htmlFor="hashtags"
             label={
               <>
-              <div className="">
-                Hashtags<span className="font-bold text-red-500">*</span>
-              </div>
+                <div className="">
+                  Hashtags<span className="font-bold text-red-500">*</span>
+                </div>
                 <i>Add as many tags as you want</i>
               </>
             }
@@ -196,66 +217,93 @@ const CreateCampaign = () => {
             <label className='block  text-[#3E3E3E] text-[1rem]  md:[1.3rem]' htmlFor="organizationMission">Organization mission<span className='font-bold text-red-500'>*</span></label>
             <textarea rows={5}  className='w-full border-b-[3px]  border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px]  mt-[12px]  text-[1.1rem] outline-0 ' value={inputValue.organizationMission} onChange={handleChanges} name="organizationMission" id="organizationMission"></textarea>
           </div> */}
-          <Button
-            className="bg-primary_color text-white py-4 text-[1.2rem] mt-3 ">Create campaign</Button>
+          <Button className="bg-primary_color text-white py-4 text-[1.2rem] mt-3 ">
+            Create campaign
+          </Button>
         </form>
       </section>
-       {showDetails&&(<section className="fixed left-0 top-0 w-screen h-screen flex items-center justify-center bg-blk_graet_bg z-50">
-          
+      {showDetails && (
+        <section className="fixed left-0 top-0 w-screen h-screen flex items-center justify-center bg-blk_graet_bg z-50">
           <lottie-player
             autoplay
             controls
             loop
             mode="normal"
             src="https://lottie.host/bb7d8892-14db-4c71-8fbf-ba38cb3bb906/TD3JJKhgdu.json"
-            style={{width: "320px"}}
-        ></lottie-player>
-          <ul className="bg-white flex flex-col text-[1.2rem] rounded-lg px-[2%] py-[2%]"> 
-            <li className='mb-3'>
-                <h4 className="text-[1.8rem] font-bold"> Good of the Earth</h4>
-                <p className="">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Recusandae optio pariatur sequi!</p>
+            style={{ width: "320px" }}
+          ></lottie-player>
+          <ul className="bg-white flex flex-col text-[1.2rem] rounded-lg px-[2%] py-[2%]">
+            <li className="mb-3">
+              <h4 className="text-[1.8rem] font-bold"> Good of the Earth</h4>
+              <p className="">
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                Recusandae optio pariatur sequi!
+              </p>
             </li>
-            <li className='flex items-center my-2'>
-              <h4 className="font-bold"> Public key:{" "} </h4>
+            <li className="flex items-center my-2">
+              <h4 className="font-bold"> Public key: </h4>
               <div className="flex gap-3 justify-between items-center">
-                <input  className="mx-2  w-[400px]" readOnly value={"hbsd78wdcbwe8g23jd9vadjcv9dvjb2ei8dvh"} />
+                <input
+                  className="mx-2  w-[400px]"
+                  readOnly
+                  value={"hbsd78wdcbwe8g23jd9vadjcv9dvjb2ei8dvh"}
+                />
                 <FaCopy
-                  className="cursor-pointer" 
+                  className="cursor-pointer"
                   onClick={() => {
-                    navigator.clipboard.writeText("hbsd78wdcbwe8g23jd9vadjcv9dvjb2ei8dvh").then(() => {
-                      setCopiedPublicKey(true);
-                      setTimeout(() => setCopiedPublicKey(false), 2000);
-                    }).catch((err) => {
-                      console.error('Failed to copy text: ', err);
-                    });
+                    navigator.clipboard
+                      .writeText("hbsd78wdcbwe8g23jd9vadjcv9dvjb2ei8dvh")
+                      .then(() => {
+                        setCopiedPublicKey(true);
+                        setTimeout(() => setCopiedPublicKey(false), 2000);
+                      })
+                      .catch((err) => {
+                        console.error("Failed to copy text: ", err);
+                      });
                   }}
-                />{copiedPublicKey&&<p className="ml-2">Copied!</p>} 
+                />
+                {copiedPublicKey && <p className="ml-2">Copied!</p>}
               </div>
             </li>
-            <li className='flex items-center my-2'>
-              <h4 className="font-bold"> Private key:{" "} </h4>
+            <li className="flex items-center my-2">
+              <h4 className="font-bold"> Private key: </h4>
               <div className="flex gap-3 justify-between items-center">
-                <input  className="mx-2  w-[400px]" readOnly value={"asjhdvcjhbaksdcjasdcbvajhc vasd vhasd cvsdjcvajsdb"} />
+                <input
+                  className="mx-2  w-[400px]"
+                  readOnly
+                  value={"asjhdvcjhbaksdcjasdcbvajhc vasd vhasd cvsdjcvajsdb"}
+                />
                 <FaCopy
-                  className="cursor-pointer" 
+                  className="cursor-pointer"
                   onClick={() => {
-                    navigator.clipboard.writeText("asjhdvcjhbaksdcjasdcbvajhc vasd vhasd cvsdjcvajsdb").then(() => {
-                      setCopiedPrivateKey(true);
-                      setTimeout(() => setCopiedPrivateKey(false), 2000);
-                    }).catch((err) => {
-                      console.error('Failed to copy text: ', err);
-                    });
+                    navigator.clipboard
+                      .writeText(
+                        "asjhdvcjhbaksdcjasdcbvajhc vasd vhasd cvsdjcvajsdb"
+                      )
+                      .then(() => {
+                        setCopiedPrivateKey(true);
+                        setTimeout(() => setCopiedPrivateKey(false), 2000);
+                      })
+                      .catch((err) => {
+                        console.error("Failed to copy text: ", err);
+                      });
                     // Optionally, you can add a toast or alert to notify the user that the text has been copiedPrsetCopiedPrivateKey
                   }}
-                />{copiedPrivateKey&&<p className="ml-2">Copied!</p>} 
+                />
+                {copiedPrivateKey && <p className="ml-2">Copied!</p>}
               </div>
             </li>
-          <Button className='self-end border-[1px] border-solid border-gray-400 w-[40%] py-2 mt-7 text-[1rem]  hover:bg-[#1a1f2e] hover:text-white'
-            onClick={()=>{setShowDetails(false)}} >
+            <Button
+              className="self-end border-[1px] border-solid border-gray-400 w-[40%] py-2 mt-7 text-[1rem]  hover:bg-[#1a1f2e] hover:text-white"
+              onClick={() => {
+                setShowDetails(false);
+              }}
+            >
               Close
-          </Button>
+            </Button>
           </ul>
-        </section>)}
+        </section>
+      )}
     </main>
   );
 };
