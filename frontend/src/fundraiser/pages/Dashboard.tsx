@@ -136,7 +136,7 @@ const campaginList =[
             </div>
         </section>
     </main>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

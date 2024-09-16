@@ -1,15 +1,5 @@
-/**
- * Program IDL in camelCase format in order to be used in JS/TS.
- *
- * Note that this is only a type helper and is not the actual IDL. The original
- * IDL can be found at `target/idl/capstone.json`.
- */
-export type Capstone = {
-<<<<<<< HEAD
+{
   "address": "5PEiejjMZfsefWvV63HYD8Nry52bY3r6N3cWigccxs7m",
-=======
-  "address": "EnWowVGkXJuEZtqPnjDt8mnB2gMhGvv7Kzs7Zyo7jjj6",
->>>>>>> 1dfab7b3380d9b1a7e377787515c69355a3aa2c5
   "metadata": {
     "name": "capstone",
     "version": "0.1.0",
@@ -18,7 +8,7 @@ export type Capstone = {
   },
   "instructions": [
     {
-      "name": "checkContributions",
+      "name": "check_contributions",
       "discriminator": [
         188,
         45,
@@ -63,7 +53,11 @@ export type Capstone = {
           }
         },
         {
-          "name": "systemProgram",
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -110,13 +104,13 @@ export type Capstone = {
               {
                 "kind": "account",
                 "path": "fundraiser.maker",
-                "account": "fundraiser"
+                "account": "Fundraiser"
               }
             ]
           }
         },
         {
-          "name": "contributorAccount",
+          "name": "contributor_account",
           "writable": true,
           "pda": {
             "seeds": [
@@ -148,7 +142,11 @@ export type Capstone = {
           }
         },
         {
-          "name": "systemProgram",
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -205,7 +203,12 @@ export type Capstone = {
           }
         },
         {
-          "name": "systemProgram",
+          "name": "vault",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -269,7 +272,7 @@ export type Capstone = {
           }
         },
         {
-          "name": "contributorAccount",
+          "name": "contributor_account",
           "writable": true,
           "pda": {
             "seeds": [
@@ -301,7 +304,11 @@ export type Capstone = {
           }
         },
         {
-          "name": "systemProgram",
+          "name": "vault",
+          "writable": true
+        },
+        {
+          "name": "system_program",
           "address": "11111111111111111111111111111111"
         }
       ],
@@ -310,7 +317,7 @@ export type Capstone = {
   ],
   "accounts": [
     {
-      "name": "contributor",
+      "name": "Contributor",
       "discriminator": [
         222,
         222,
@@ -323,7 +330,7 @@ export type Capstone = {
       ]
     },
     {
-      "name": "fundraiser",
+      "name": "Fundraiser",
       "discriminator": [
         167,
         106,
@@ -334,33 +341,46 @@ export type Capstone = {
         204,
         196
       ]
+    },
+    {
+      "name": "Vault",
+      "discriminator": [
+        211,
+        8,
+        232,
+        43,
+        2,
+        152,
+        117,
+        119
+      ]
     }
   ],
   "errors": [
     {
       "code": 6000,
-      "name": "targetNotMet",
+      "name": "TargetNotMet",
       "msg": "The amount to raise has not been met"
     },
     {
       "code": 6001,
-      "name": "targetMet",
+      "name": "TargetMet",
       "msg": "The amount to raise has been achieved"
     },
     {
       "code": 6002,
-      "name": "fundraiserNotEnded",
+      "name": "FundraiserNotEnded",
       "msg": "The fundraiser has not ended yet"
     },
     {
       "code": 6003,
-      "name": "fundraiserEnded",
+      "name": "FundraiserEnded",
       "msg": "The fundraiser has ended"
     }
   ],
   "types": [
     {
-      "name": "contributor",
+      "name": "Contributor",
       "type": {
         "kind": "struct",
         "fields": [
@@ -372,7 +392,7 @@ export type Capstone = {
       }
     },
     {
-      "name": "fundraiser",
+      "name": "Fundraiser",
       "type": {
         "kind": "struct",
         "fields": [
@@ -381,11 +401,11 @@ export type Capstone = {
             "type": "pubkey"
           },
           {
-            "name": "amountToRaise",
+            "name": "amount_to_raise",
             "type": "u64"
           },
           {
-            "name": "currentAmount",
+            "name": "current_amount",
             "type": "u64"
           },
           {
@@ -398,6 +418,13 @@ export type Capstone = {
           }
         ]
       }
+    },
+    {
+      "name": "Vault",
+      "type": {
+        "kind": "struct",
+        "fields": []
+      }
     }
   ]
-};
+}
