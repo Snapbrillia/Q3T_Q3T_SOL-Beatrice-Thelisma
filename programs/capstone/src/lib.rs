@@ -1,6 +1,8 @@
 use anchor_lang::prelude::*;
 
-declare_id!("9tpAmcopySQm8kFN8LQ4N5UreYRR222JU236PwHrCj8m");
+
+declare_id!("EnWowVGkXJuEZtqPnjDt8mnB2gMhGvv7Kzs7Zyo7jjj6");
+
 
 mod state;
 mod instructions;
@@ -16,28 +18,24 @@ pub mod capstone {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>, amount: u64, deadline: i64) -> Result<()> {
-
         ctx.accounts.initialize(amount, deadline, &ctx.bumps)?;
 
         Ok(())
     }
 
     pub fn contribute(ctx: Context<Contribute>, amount: u64) -> Result<()> {
-
         ctx.accounts.contribute(amount)?;
 
         Ok(())
     }
 
     pub fn check_contributions(ctx: Context<CheckContributions>) -> Result<()> {
-
         ctx.accounts.check_contributions()?;
 
         Ok(())
     }
 
     pub fn refund(ctx: Context<Refund>) -> Result<()> {
-
         ctx.accounts.refund()?;
 
         Ok(())

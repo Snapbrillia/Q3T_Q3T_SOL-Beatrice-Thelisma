@@ -8,9 +8,12 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Connectors from './contributor/connector.tsx';
+import Dashboard from './fundraiser/pages/Dashboard.tsx';
 import SignUp from './fundraiser/pages/SignUp.tsx';
 import SignIn from './fundraiser/pages/SignIn.tsx';
-import Dashboard from './fundraiser/pages/Dashboard.tsx';
+import ViewCampaign from "./fundraiser/pages/ViewCampaign.tsx";
+import CreateCampaign from './fundraiser/pages/CreateCampaign.tsx';
 
 const router = createBrowserRouter([
   {
@@ -18,12 +21,22 @@ const router = createBrowserRouter([
     element: <Home />,
   },
   {
-    path: "donate",
-    element: <Donate />,
+    path: "donate/:id",
+    element: (
+      <Donate />
+    ),
   },
   {
-    path: "dashboard",
+    path: "/dashboard",
     element: <Dashboard />,
+  },
+    {
+    path: "/create-campaign",
+    element: <CreateCampaign />,
+  },
+    {
+    path: "/dashboard/:campaignID",
+    element: <ViewCampaign />,
   },
   {
     path: "/auth/sign-up",
@@ -35,10 +48,11 @@ const router = createBrowserRouter([
   },
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Connectors>
+      <RouterProvider router={router} />
+    </Connectors>
   </React.StrictMode>
 );
-
