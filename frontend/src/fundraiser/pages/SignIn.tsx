@@ -4,6 +4,8 @@ import Input from '../atom/Input'
 import Button from '../atom/Button'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
 import { Link } from 'react-router-dom'
+import "./style.css"
+
 
 const SignIn = () => {
  const initialData = {
@@ -52,7 +54,7 @@ const SignIn = () => {
               Password<span className='font-bold text-red-500'>*</span>
             </label>
             <div className="flex items-center border-b-[3px]  border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px] w-full mt-[12px] h-[28px] text-[1.1rem] ">
-              <input id='password' name='password' type={showPW?"text":"password"} className=' bg-transparent outline-0 flex-1 w]' required />
+              <input id='password' name='password' onChange={handleChanges} value={inputValue.password} type={showPW?"text":"password"} className=' bg-transparent outline-0 flex-1 w]' required />
               <div onClick={()=>setShowPW(!showPW)} className="text-[1.3rem]">
                 {showPW?<FaRegEye />:<FaRegEyeSlash />}
               </div>
