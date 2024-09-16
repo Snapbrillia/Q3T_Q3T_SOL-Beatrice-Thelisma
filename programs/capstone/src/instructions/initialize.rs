@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
 use crate::{
-    state::{Fundraiser}, ANCHOR_DISCRIMINATOR,
+    state::Fundraiser, FundraiserError, ANCHOR_DISCRIMINATOR
 };
 
 #[derive(Accounts)]
@@ -21,6 +21,14 @@ pub struct Initialize<'info> {
 
 impl<'info> Initialize<'info> {
     pub fn initialize(&mut self, amount: u64, deadline_: i64, bumps: &InitializeBumps) -> Result<()> {
+
+        // Check if the fundraising duration has been reached
+        let current_time = Clock::get()?.unix_timestamp;
+ 
+        require!(
+            deadline_ > current_time,
+            FundraiserError::DeadlinePast
+        );
 
         // Initialize the fundraiser account
         self.fundraiser.set_inner(Fundraiser {
