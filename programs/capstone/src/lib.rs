@@ -15,8 +15,6 @@ pub use constants::*;
 
 #[program]
 pub mod capstone {
-    use instruction::Withdraw;
-
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>, amount: u64, deadline: i64) -> Result<()> {
