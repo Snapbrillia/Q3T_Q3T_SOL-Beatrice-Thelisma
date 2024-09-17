@@ -3,8 +3,9 @@ import SectionHeader from '../atom/SectionHeader'
 import Input from '../atom/Input'
 import Button from '../atom/Button'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import "./style.css"
+import { login } from '../../api/auth'
 
 
 const SignIn = () => {
@@ -12,12 +13,15 @@ const SignIn = () => {
     email: "",
     password:"",
   };
-  const [inputValue, setInputValue] = useState<{ [key: string]: string }>(
+  const [inputValue, setInputValue] = useState<any>(
     initialData
   );
   const [showPW, setShowPW] = useState(false)
+  const navigate =useNavigate()
+
+
    const handleChanges = (e: React.ChangeEvent<HTMLInputElement>|React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue((prev) => {
+    setInputValue((prev:{ [key: string]: string }) => {
       return {
         ...prev,
         [e.target.name]: e.target.value,
@@ -25,18 +29,27 @@ const SignIn = () => {
     });
   };
 
-  const handleSubmit=(e:any)=>{
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+console.log(inputValue);
 
-    console.log(inputValue);
+  try {
+        const res = await login(inputValue)
+        if (res) {
+          navigate("/dashboard")
+        }
+        
+
+      } catch (error) {
+        
+      }
     
   }
 
   return (
-     <main className="sbg-gsraidnt_bg items-center w-[80vw] justify-between overflow-y-auto lg:flex flex-col lg:overflow-y-clip">
+     <main className="sbg-gsraidnt_bg items-center h-[90vh] w-[80vw] justify-between overflow-y-auto lg:flex flex-col lg:overflow-y-clip">
       <div className="h-auto  sself-start w-full   bg-[#FBECF] sticky lg:flex flex-col itfems-center  dlg:h-screen  md:px-[31px] lg:text-left lg:px-[3%] lg:w-[45%] ">
         <SectionHeader
-        //   className="text-center md:px-[31px] lg:text-left "
           headingChildren={"Welcome back"}
           headingClassName="font-bold "
           pChildren={"Create, update and manage your fundraising "}

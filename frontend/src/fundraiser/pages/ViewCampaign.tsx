@@ -91,13 +91,12 @@ const ViewCampaign= () => {
                     }).catch((err) => {
                       console.error('Failed to copy text: ', err);
                     });
-                    // Optionally, you can add a toast or alert to notify the user that the text has been copiedPrsetCopiedPrivateKey
                   }}
                 />{copiedPrivateKey&&<p className="ml-2">Copied!</p>} 
               </div>
             </li>
           <Button className='self-end border-[1px] border-solid border-gray-400 w-[40%] py-2 mt-7 text-[1rem]  hover:bg-[#1a1f2e] hover:text-white'
-            onClick={()=>{setShowDetails(false)}} >
+            onClick={()=>{setShowDetails(false); }} >
               Close
           </Button>
           </ul>

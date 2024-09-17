@@ -14,7 +14,7 @@ interface AuthResponse {
 }
 
 export const signup = async (credentials: RegisterRequest): Promise<AuthResponse> => {
-  const { data } = await apiClient.post('/auth/signup', credentials);
+  const { data } = await apiClient.post('/api/auth/signup', credentials);
   
   // Save tokens to localStorage
   localStorage.setItem('accessToken', data.accessToken);

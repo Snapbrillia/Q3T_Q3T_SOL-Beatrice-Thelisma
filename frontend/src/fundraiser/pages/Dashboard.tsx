@@ -1,13 +1,43 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from '../atom/Image'
 import Card from '../molecule/Card'
 import { IoFileTrayOutline } from "react-icons/io5";
 import Button from '../atom/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import "./style.css"
+import { useCreateCampaignStore } from '../util/store';
+import { FaCopy } from 'react-icons/fa6';
+import CampaignSuccessModal from '../molecule/CampaignSuccessModal';
+import WalletConnectButton from '../../contributor/connectWalletButton';
+import { logout } from '../../api/auth';
 
 const Dashboard = () => {
   const [hasCampagin, setHasCampagin] = useState<boolean>(true)
+  const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [copiedPublicKey, setCopiedPublicKey] = useState<boolean>(false);
+  const [copiedPrivateKey, setCopiedPrivateKey] = useState<boolean>(false);
+  const navigate = useNavigate();
+  const {campaignDetails} = useCreateCampaignStore()
+
+  // useEffect(() => {
+  //  if (localStorage.getItem("accessToken")===null||localStorage.getItem("accessToken")===undefined) {
+  //   navigate("/auth/sign-in")
+  //  }    
+  // }, [])
+
+
+  useEffect(() => {
+    if (campaignDetails && Object.keys(campaignDetails).length > 0) {
+      setShowDetails(true)
+      
+    }
+   
+  }, [])
+
+ 
+  
+
+  
 
 const campaginList =[
     {
@@ -37,16 +67,15 @@ const campaginList =[
 
                 <h3 className=" text-[2rem] md:text-[2.5rem] font-bold">Good of the Earth</h3>
                 <p className="text-[.8rem] md:text-[1rem]">Good of the Earth is a non-profit organization dedicated to environmental conservation. </p>
-              </div>
-              <div className="">
-               <div className='font-bold'>
-                 {/* <span className="text-[2rem]">$400 </span>
-                 <span className=''>/$1000 raised</span> */}
-                </div>
-                {/* <span className="block bg-progress_bar border-[1px] border-[white] mt-1 h-[8px] w-full"></span> */}
-                <Link to={"/create-campaign"}>
+                <div className="flex items-end justify-between">
+                  <Link to={"/dashboard/create-campaign"}>
                     <Button disabled={false} className='bg-[#512da8] text-white hover:bg-[#1a1f2e] mt-5 py-3 text-[1.1rem] disabled:bg-[#512da8] disabled:cursor-default disabled:opacity-80'>Create campagin</Button>
                   </Link>
+                  <p onClick={()=>logout} className="underline cursor-pointer mt-2">Logout</p>
+                </div>
+              </div>
+              <div className="mt-5 py-3 text-[1.1rem] disabled:bg-[#512da8] disabled:cursor-default disabled:opacity-80">
+                  <WalletConnectButton  />
               </div>
             </div>
         </section>
@@ -80,60 +109,9 @@ const campaginList =[
                 </section>
               )
               }
-
-              
-             
-               {/* <div className=" relative h-[30vh] w-[30%] px-2 py-3">
-                <Image className='h-full rounded-[12px] absolute top-0 w-[100%]' imgClassName=' rounded-[12px] object-cover' src='https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=86d24240ca6b1df611e98ed6bd7a1efc&auto=format&fit=crop&w=1400&q=80' />
-                <div className="bg-transparent_bg w-full h-full absolute top-0 rounded-[12px]"></div>
-                <h3 className="z-[3] relative text-white text-[2rem] font-bold px-3">Title of campagin</h3>
-                <div className="flex items-center justify-between z-[3] gap-5 px-3 relative mt-5">
-                  <div className="">
-                <div className='font-bold text-white'>
-                 <span className="text-[2rem]">$400 </span>
-                 <span className=''>/$1000 raised</span>
-                </div>
-                  <span className="block bg-progress_bar border-[1px] border-[white] mt-1 h-[8px] w-full"></span>
-                  </div>
-                  <span className="text-[2rem]  text-white">25 <span className='text-[1.1rem]'>days left</span> </span>
-                </div>
-              </div> */}
-              {/*<div className="flex-1 relative h-[30vh] w-[30%] px-2 py-3">
-                <Image className='h-full rounded-[12px] absolute top-0 w-[100%]' imgClassName=' rounded-[12px] object-cover' src='https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=86d24240ca6b1df611e98ed6bd7a1efc&auto=format&fit=crop&w=1400&q=80' />
-                <div className="bg-transparent_bg w-full h-full absolute top-0 rounded-[12px]"></div>
-                <h3 className="z-[3] relative text-white text-[2rem] font-bold px-3">Title of campagin</h3>
-                <div className="flex items-center justify-between z-[3] gap-5 px-3 relative mt-5">
-                  <div className="">
-                <div className='font-bold text-white'>
-                 <span className="text-[1.5rem]">$400 </span>
-                 <span className=''>/$1000</span>
-                </div>
-                  <span className="block bg-progress_bar border-[1px] border-[white] mt-1 h-[8px] w-full"></span>
-                  </div>
-                  <span className="text-[2rem]  text-white">25 <span className='text-[1.1rem]'>days left</span> </span>
-                </div>
-              </div>
-              <div className="flex-1 relative h-[30vh] w-[30%] px-2 py-3">
-                <Image className='h-full rounded-[12px] absolute top-0 w-[100%]' imgClassName=' rounded-[12px] object-cover' src='https://images.unsplash.com/photo-1444212477490-ca407925329e?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=86d24240ca6b1df611e98ed6bd7a1efc&auto=format&fit=crop&w=1400&q=80' />
-                <div className="bg-transparent_bg w-full h-full absolute top-0 rounded-[12px]"></div>
-                <h3 className="z-[3] relative text-white text-[2rem] font-bold px-3">Title of campagin</h3>
-                <div className="flex items-center justify-between z-[3] gap-5 px-3 relative mt-5">
-                  <div className="">
-                <div className='font-bold text-white'>
-                 <span className="text-[2rem]">$400 </span>
-                 <span className=''>/$1000 raised</span>
-                </div>
-                  <span className="block bg-progress_bar border-[1px] border-[white] mt-1 h-[8px] w-full"></span>
-                  </div>
-                  <span className="text-[2rem]  text-white">25 <span className='text-[1.1rem]'>days left</span> </span>
-                </div>
-              </div> */}
-
-              {/* <Card icon={<GiCash className='text-[1.6rem]' />} title='Total Amount Raised' result="$400" active={true} subText="more than the previous week" />
-              <Card icon={<MdSupervisedUserCircle className='text-[1.6rem]' />} title='Number of Contributors' result="137" active={false} />
-              <Card icon={<LuCalendarDays className='text-[1.6rem]' />} title='Number of days left' result="25/50" /> */}
-              {/* <Card title='' result="$10237" /> */}
             </div>
+            {showDetails && (<CampaignSuccessModal campaignDetails={campaignDetails}  setShowDetails={setShowDetails} />
+      )}
         </section>
     </main>
   );
