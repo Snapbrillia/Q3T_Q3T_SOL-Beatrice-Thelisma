@@ -15,6 +15,8 @@ pub use constants::*;
 
 #[program]
 pub mod capstone {
+    use instruction::Withdraw;
+
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>, amount: u64, deadline: i64) -> Result<()> {
@@ -29,8 +31,8 @@ pub mod capstone {
         Ok(())
     }
 
-    pub fn check_contributions(ctx: Context<CheckContributions>) -> Result<()> {
-        ctx.accounts.check_contributions()?;
+    pub fn withdraw(ctx: Context<Withdraw>) -> Result<()> {
+        ctx.accounts.withdraw()?;
 
         Ok(())
     }

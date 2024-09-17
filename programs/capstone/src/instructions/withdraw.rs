@@ -6,7 +6,7 @@ use crate::{
 };
 
 #[derive(Accounts)]
-pub struct CheckContributions<'info> {
+pub struct Withdraw<'info> {
     #[account(mut)]
     pub maker: Signer<'info>,
     #[account(
@@ -19,8 +19,8 @@ pub struct CheckContributions<'info> {
     pub system_program: Program<'info, System>,
 }
 
-impl<'info> CheckContributions<'info> {
-    pub fn check_contributions(&self) -> Result<()> {
+impl<'info> Withdraw<'info> {
+    pub fn withdraw(&self) -> Result<()> {
 
         // Check if the fundraising duration has been reached
         let current_time = Clock::get()?.unix_timestamp;
