@@ -31,7 +31,7 @@ const router = createBrowserRouter([
     element: <Dashboard />,
   },
     {
-    path: "/create-campaign",
+    path: "/dashboard/create-campaign",
     element: <CreateCampaign />,
   },
     {

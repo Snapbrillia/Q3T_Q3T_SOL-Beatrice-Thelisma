@@ -3,30 +3,34 @@ import Button from "../atom/Button";
 import SectionHeader from "../atom/SectionHeader";
 import Input from "../atom/Input";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./style.css"
+import { signup } from "../../api/register";
 
 const SignUp = () => {
   const initialData = {
-    organizationName: "",
+    name: "",
     email: "",
-    telNum: "",
-    organizationRegNum: "",
-    organizationWebsite: "",
-    walletAddress: "",
-    organizationMission: "",
+    // telNum: "",
+    // organizationRegNum: "",
+    // organizationWebsite: "",
+    // walletAddress: "",
+    // organizationMission: "",
     password: "",
   };
-  const [inputValue, setInputValue] = useState<{ [key: string]: string }>(
+  const [inputValue, setInputValue] = useState<any>(
     initialData
   );
   const [showPW, setShowPW] = useState(false);
+  const navigate =useNavigate()
+
+
   const handleChanges = (
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setInputValue((prev) => {
+    setInputValue((prev:{ [key: string]: string }) => {
       return {
         ...prev,
         [e.target.name]: e.target.value,
@@ -34,17 +38,26 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit =async  (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+      try {
+        const res = await signup(inputValue)
+        console.log(res);
+        if (res) {
+          navigate("/dashboard")
+        }
+        
 
-    console.log(inputValue);
+      } catch (error) {
+        
+      }
+
   };
 
   return (
     <main className="bg-graidnt_bg items-center w-[90vw] justify-center overflow-y-auto lg:flex lg:overflow-y-clip">
       <div className="h-auto  sself-start w-full   bg-[#FBECF] sticky lg:flex flex-col itfems-center  dlg:h-screen  md:px-[31px] lg:text-left lg:px-[3%] lg:w-[45%] ">
         <SectionHeader
-          // className="text-center md:px-[31px] lg:text-left lg:px-[10%]"
           headingChildren={"Transform your fundraising today"}
           headingClassName="font-bold text-[2rem]"
           pChildren="Guidance, expertise, and personalized setup - all a conversation away."
@@ -60,23 +73,22 @@ const SignUp = () => {
       <section className="w-[100%] my-[10%] px-[16px]  h-screen no-scrollbar overflow-y-scroll md:w-[75%] lg:my-0 lg:px-[5%] lg:py-[4%]  lg:w-[65%]">
         <form
           className="shadow-form_shadow no-scrollbar overflow-y-scroll rounded-[10px] md:w-[100%] md:px-[31px] lg:py-[5%] lg:px-[5%] "
-          // action={signUpNewUsers}
           onSubmit={handleSubmit}
         >
           <Input
             required
-            id="organizationName"
-            name="organizationName"
+            id="name"
+            name="name"
             type="text"
             className="mt-4"
-            htmlFor="organizationName"
+            htmlFor="name"
             label={
               <>
                 Name of your organization of campaign
                 <span className="font-bold text-red-500">*</span>
               </>
             }
-            value={inputValue.organizationName}
+            value={inputValue.name}
             onChange={handleChanges}
           />
           <Input
@@ -95,7 +107,7 @@ const SignUp = () => {
             onChange={handleChanges}
           />
           <Input
-            required
+            // required
             id="telNum"
             name="telNum"
             type="tel"
@@ -110,7 +122,7 @@ const SignUp = () => {
             onChange={handleChanges}
           />
           <Input
-            required
+            // required
             id="organizationRegNum"
             name="organizationRegNum"
             type="text"
@@ -126,7 +138,7 @@ const SignUp = () => {
             onChange={handleChanges}
           />
           <Input
-            required
+            // required
             id="organizationWebsite"
             name="organizationWebsite"
             type="url"
@@ -142,7 +154,7 @@ const SignUp = () => {
             onChange={handleChanges}
           />
           <Input
-            required
+            // required
             id="walletAddress"
             name="walletAddress"
             type="text"
@@ -166,7 +178,7 @@ const SignUp = () => {
             </label>
             <textarea
               rows={4}
-              required
+              // required
               className="w-full border-b-[3px]  border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px]  mt-[12px]  text-[1.1rem] outline-0 "
               value={inputValue.organizationMission}
               onChange={handleChanges}
@@ -186,6 +198,8 @@ const SignUp = () => {
                 type={showPW ? "text" : "password"}
                 className="bg-transparent outline-0 flex-1 w]"
                 required
+                value={inputValue.password}
+                onChange={handleChanges}
               />
               <div onClick={() => setShowPW(!showPW)} className="text-[1.3rem]">
                 {showPW ? <FaRegEye /> : <FaRegEyeSlash />}

@@ -13,7 +13,7 @@ interface LoginResponse {
 }
 
 export const login = async (credentials: LoginRequest): Promise<LoginResponse> => {
-  const { data } = await apiClient.post('/auth/login', credentials);
+  const { data } = await apiClient.post('/api/auth/signin', credentials);
   
   // Save tokens to localStorage
   localStorage.setItem('accessToken', data.accessToken);
