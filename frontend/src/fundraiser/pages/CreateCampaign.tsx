@@ -2,19 +2,17 @@ import React, { useState } from "react";
 import Button from "../atom/Button";
 import SectionHeader from "../atom/SectionHeader";
 import Input from "../atom/Input";
-import { getAllCampaigns, createCampaign } from "../../api/campaign";
-import { Campaign } from "../../api/types";
-import "./style.css";
-import { FaCopy } from "react-icons/fa6";
-import * as LottiePlayer from "@lottiefiles/lottie-player";
+import { createCampaign } from "../../api/campaign";
 import { useNavigate } from "react-router";
 import { useCreateCampaignStore } from "../util/store";
 import { IoIosArrowBack } from "react-icons/io";
-
+import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
+import { clusterApiUrl, Connection } from "@solana/web3.js";
+import * as anchor from "@coral-xyz/anchor";
+import importedWallet from "../../contributor/utils/wallet.json";
+import initialize from "../../contributor/utils/initialize";
 
 // how to create funraiser
-
-
 
 const CreateCampaign = () => {
   const initialData = {
@@ -27,15 +25,38 @@ const CreateCampaign = () => {
     // uploadFile: "",
   };
   const [inputValue, setInputValue] = useState<any>(initialData);
- const navigate = useNavigate()
- const {updateCampaginDetails} =useCreateCampaignStore()
+  const navigate = useNavigate();
+  const { updateCampaginDetails } = useCreateCampaignStore();
+
+  const { publicKey } = useWallet();
+
+  const baseAccount = anchor.web3.Keypair.fromSecretKey(
+    new Uint8Array(importedWallet)
+  );
+
+  console.log(baseAccount.publicKey.toString());
+
+  const wallet = useAnchorWallet();
+  function getProvider() {
+    if (!wallet) {
+      console.log("No wallet connected");
+      return;
+    }
+    const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+
+    const provider = new anchor.AnchorProvider(connection, wallet, {
+      preflightCommitment: "confirmed",
+    });
+
+    return provider;
+  }
 
   const handleChanges = (
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setInputValue((prev:{ [key: string]: string }) => {
+    setInputValue((prev: { [key: string]: string }) => {
       return {
         ...prev,
         [e.target.name]: e.target.value,
@@ -43,35 +64,53 @@ const CreateCampaign = () => {
     });
   };
 
-  const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = {
-      ...inputValue,
-      whyCare: inputValue.whyCare.split('|'),
-      // tag: inputValue.tag.split('#').filter(Boolean),
-    };
-
-      try {
-    const createdCampaign = await createCampaign(formData);
-    if (createdCampaign) {
-      updateCampaginDetails(createdCampaign)
-      navigate("/dashboard")
+    if (publicKey && wallet) {
+      await initialize(publicKey, getProvider(), baseAccount);
+      // toast.success("Account Initialization Successful", {
+      //   position: "top-right",
+      //   autoClose: 5000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   pauseOnHover: true,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "light",
+      //   transition: Bounce,
+      // });
+    } else {
+      console.log("failed to initialize and load wallet");
     }
-    
-    console.log(createdCampaign);
 
-    
-  } catch (error) {
-    console.error('Error creating campaign:', error);
-  }
+    // const formData = {
+    //   ...inputValue,
+    //   whyCare: inputValue.whyCare.split("|"),
+    //   // tag: inputValue.tag.split('#').filter(Boolean),
+    // };
+
+    // try {
+    //   const createdCampaign = await createCampaign(formData);
+    //   if (createdCampaign) {
+    //     updateCampaginDetails(createdCampaign);
+    //     navigate("/dashboard");
+    //   }
+
+    //   console.log(createdCampaign);
+    // } catch (error) {
+    //   console.error("Error creating campaign:", error);
+    // }
   };
 
   return (
     <main className="bg-graidnt_bg items-center w-[90vw] justify-center overflow-y-auto lg:flex lg:overflow-y-clip">
-       <div onClick={() => navigate(-1)} className=" absolute top-5 left-5 hidden lg:flex items-center text-black  text-[20px] cursor-pointer">
-          <IoIosArrowBack className="text-[1.7rem]" /> <p className="">Back</p>
-        </div>
+      <div
+        onClick={() => navigate(-1)}
+        className=" absolute top-5 left-5 hidden lg:flex items-center text-black  text-[20px] cursor-pointer"
+      >
+        <IoIosArrowBack className="text-[1.7rem]" /> <p className="">Back</p>
+      </div>
       <div className="h-auto  sself-start w-full   bg-[#FBECF] sticky lg:flex flex-col itfems-center  dlg:h-screen  md:px-[31px] lg:text-left lg:px-[3%] lg:w-[45%] ">
         <SectionHeader
           headingChildren={"Create your campaign"}
@@ -150,11 +189,12 @@ const CreateCampaign = () => {
                 Why should do you need to fundraise
                 <span className="font-bold text-red-500">*</span>
               </div>
-              <i>Separate each reason with </i><b>'|'</b>
+              <i>Separate each reason with </i>
+              <b>'|'</b>
             </label>
             <textarea
               rows={2}
-              required  
+              required
               placeholder="Example: To get | test"
               className="w-full border-b-[3px] bg-transparent border-[#808080] py-4 rounded-[4px] pl-[10px] pr-[5px]  mt-[12px]  text-[1.1rem] outline-0 "
               value={inputValue.whyCare}
@@ -187,9 +227,7 @@ const CreateCampaign = () => {
             htmlFor="hashtags"
             label={
               <>
-                <div className="">
-                  Hashtags
-                </div>
+                <div className="">Hashtags</div>
                 <i>Add as many tags as you want</i>
               </>
             }
@@ -211,14 +249,12 @@ const CreateCampaign = () => {
             }
             value={inputValue.uploadFile}
             onChange={handleChanges}
-            
           />
           <Button className="bg-primary_color text-white py-4 text-[1.2rem] mt-3 ">
             Create campaign
           </Button>
         </form>
       </section>
-
     </main>
   );
 };

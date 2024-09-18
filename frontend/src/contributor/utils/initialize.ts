@@ -3,7 +3,6 @@ import { Program } from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram, } from "@solana/web3.js";
 import IDL from "./capstone.json";
 import { Buffer } from "buffer";
-import VaultWallet from './vault.json'
 
 export default async function initialize(
   connectedPublicKey: PublicKey,
@@ -20,7 +19,7 @@ export default async function initialize(
     program.programId
   )[0];
 
-  const vaultKeypair = anchor.web3.Keypair.fromSecretKey(new Uint8Array(VaultWallet));
+  // const vaultKeypair = anchor.web3.Keypair.fromSecretKey(new Uint8Array(VaultWallet));
 
 
   const confirm = async (signature: string): Promise<string> => {
@@ -41,7 +40,7 @@ export default async function initialize(
       .accountsPartial({
         maker: baseAccount.publicKey, // baseAccount as maker
         fundraiser: fundraiser,
-        vault: vaultKeypair.publicKey,
+        // vault: vaultKeypair.publicKey,
         systemProgram: SystemProgram.programId,
       })
       .instruction(); // Make sure to await this
@@ -56,7 +55,7 @@ export default async function initialize(
     transaction.feePayer = provider.wallet.publicKey;
 
     try {
-      const signature = await provider.sendAndConfirm(transaction, [baseAccount, vaultKeypair]).then(confirm); // baseAccount passed as signer
+      const signature = await provider.sendAndConfirm(transaction, [baseAccount]).then(confirm); // baseAccount passed as signer
       console.log("Transaction sent with signature:", signature);
       return signature;
     } catch (error) {

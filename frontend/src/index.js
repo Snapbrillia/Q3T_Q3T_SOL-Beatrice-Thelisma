@@ -14,6 +14,13 @@ import SignUp from './fundraiser/pages/SignUp.tsx';
 import SignIn from './fundraiser/pages/SignIn.tsx';
 import ViewCampaign from "./fundraiser/pages/ViewCampaign.tsx";
 import CreateCampaign from './fundraiser/pages/CreateCampaign.tsx';
+import ProtectedRoute from './components/protectedRoute.tsx';
+import { Buffer } from 'buffer';
+
+// Ensure Buffer is available globally
+if (!window.Buffer) {
+  window.Buffer = Buffer;
+}
 
 const router = createBrowserRouter([
   {
@@ -27,16 +34,21 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/dashboard",
-    element: <Dashboard />,
-  },
-    {
-    path: "/dashboard/create-campaign",
-    element: <CreateCampaign />,
-  },
-    {
-    path: "/dashboard/:campaignID",
-    element: <ViewCampaign />,
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "/dashboard/create-campaign",
+        element: <CreateCampaign />,
+      },
+      {
+        path: "/dashboard/:campaignID",
+        element: <ViewCampaign />,
+      },
+    ]
   },
   {
     path: "/auth/sign-up",
