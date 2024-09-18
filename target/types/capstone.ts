@@ -5,11 +5,7 @@
  * IDL can be found at `target/idl/capstone.json`.
  */
 export type Capstone = {
-<<<<<<< HEAD
-  "address": "5PEiejjMZfsefWvV63HYD8Nry52bY3r6N3cWigccxs7m",
-=======
-  "address": "EnWowVGkXJuEZtqPnjDt8mnB2gMhGvv7Kzs7Zyo7jjj6",
->>>>>>> 1dfab7b3380d9b1a7e377787515c69355a3aa2c5
+  "address": "2cMNzY4mpPpxLVy2iF7ee93gBm4mGnQx6qW9kqzrJymY",
   "metadata": {
     "name": "capstone",
     "version": "0.1.0",
@@ -17,58 +13,6 @@ export type Capstone = {
     "description": "Created with Anchor"
   },
   "instructions": [
-    {
-      "name": "checkContributions",
-      "discriminator": [
-        188,
-        45,
-        184,
-        27,
-        146,
-        96,
-        153,
-        5
-      ],
-      "accounts": [
-        {
-          "name": "maker",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "fundraiser",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  102,
-                  117,
-                  110,
-                  100,
-                  114,
-                  97,
-                  105,
-                  115,
-                  101,
-                  114
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "maker"
-              }
-            ]
-          }
-        },
-        {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": []
-    },
     {
       "name": "contribute",
       "discriminator": [
@@ -306,6 +250,62 @@ export type Capstone = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "withdraw",
+      "discriminator": [
+        183,
+        18,
+        70,
+        156,
+        148,
+        109,
+        161,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "maker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "feeCollector",
+          "writable": true
+        },
+        {
+          "name": "fundraiser",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102,
+                  117,
+                  110,
+                  100,
+                  114,
+                  97,
+                  105,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "maker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
@@ -339,21 +339,31 @@ export type Capstone = {
   "errors": [
     {
       "code": 6000,
+      "name": "refundsDisabled",
+      "msg": "This fundraiser does not allow refunds"
+    },
+    {
+      "code": 6001,
+      "name": "deadlinePast",
+      "msg": "The deadline must be in the future"
+    },
+    {
+      "code": 6002,
       "name": "targetNotMet",
       "msg": "The amount to raise has not been met"
     },
     {
-      "code": 6001,
+      "code": 6003,
       "name": "targetMet",
       "msg": "The amount to raise has been achieved"
     },
     {
-      "code": 6002,
+      "code": 6004,
       "name": "fundraiserNotEnded",
       "msg": "The fundraiser has not ended yet"
     },
     {
-      "code": 6003,
+      "code": 6005,
       "name": "fundraiserEnded",
       "msg": "The fundraiser has ended"
     }

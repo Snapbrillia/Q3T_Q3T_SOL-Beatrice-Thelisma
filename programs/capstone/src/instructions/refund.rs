@@ -6,6 +6,7 @@ use crate::{
         Fundraiser,
     },
     FundraiserError,
+    REFUNDS,
 };
 
 #[derive(Accounts)]
@@ -31,6 +32,12 @@ pub struct Refund<'info> {
 
 impl<'info> Refund<'info> {
     pub fn refund(&mut self) -> Result<()> {
+
+        // Check if refunds are allowed
+        require!(
+            REFUNDS,
+            FundraiserError::RefundsDisabled
+        );
 
         // Check if the fundraising duration has been reached
         let current_time = Clock::get()?.unix_timestamp;

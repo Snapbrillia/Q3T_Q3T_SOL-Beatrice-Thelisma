@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
 
-declare_id!("EnWowVGkXJuEZtqPnjDt8mnB2gMhGvv7Kzs7Zyo7jjj6");
+declare_id!("2cMNzY4mpPpxLVy2iF7ee93gBm4mGnQx6qW9kqzrJymY");
 
 
 mod state;
