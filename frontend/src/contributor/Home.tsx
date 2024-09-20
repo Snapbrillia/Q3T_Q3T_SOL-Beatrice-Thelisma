@@ -137,8 +137,8 @@ export default function Home() {
                 <div className="funding-counter">
                   <p>
                     <strong>
-                      ${allCampaigns[activeNum].targetAmount} / $
-                      {allCampaigns[activeNum].currentAmount} raised
+                      ${allCampaigns[activeNum].currentAmount} / $
+                      {allCampaigns[activeNum].targetAmount} raised
                     </strong>
                   </p>
                   {/* <div className="funding-counter__bar"></div> */}

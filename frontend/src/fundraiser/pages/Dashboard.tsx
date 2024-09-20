@@ -137,10 +137,10 @@ const Dashboard = () => {
                   <div className="">
                     <div className="font-bold text-white">
                       <span className="lg:text-[2rem]">
-                        SOL {item.targetAmount.toLocaleString()}{" "}
+                        SOL {item.currentAmount.toLocaleString()}{" "}
                       </span>
                       <span className="">
-                        /SOL {item.currentAmount.toLocaleString()} raised
+                        /SOL {item.targetAmount.toLocaleString()} raised
                       </span>
                     </div>
                     <span

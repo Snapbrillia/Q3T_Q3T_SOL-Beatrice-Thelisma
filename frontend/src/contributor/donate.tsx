@@ -164,7 +164,7 @@ export default function Donate() {
               <div className="funding-counter">
                 <p>
                   <strong>
-                    Sol {campaign?.targetAmount} / SOL {campaign?.currentAmount}{" "}
+                    Sol {campaign?.currentAmount} / SOL {campaign?.targetAmount}{" "}
                     raised
                   </strong>
                 </p>

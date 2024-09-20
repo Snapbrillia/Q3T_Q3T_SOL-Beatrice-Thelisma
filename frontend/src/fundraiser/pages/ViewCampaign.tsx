@@ -165,7 +165,7 @@ const ViewCampaign = () => {
               <span className="text-[2rem]">
                 SOL {campaign?.currentAmount}{" "}
               </span>
-              <span className="">/SOL {campaign?.currentAmount} raised</span>
+              <span className="">/SOL {campaign?.targetAmount} raised</span>
             </div>
             <span className="block bg-progress_bar border-[1px] border-[white] mt-1 h-[8px] w-full"></span>
             <Button
