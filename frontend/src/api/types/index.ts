@@ -1,11 +1,22 @@
 // src/types/index.ts
 export interface Campaign {
-    title: string;
-    description: string;
-    targetAmount: number;
-    endDate: string;
-    tag: string;
-    owner: string; // User ID
-    whyCare: string[];
-  }
+  id: string;
+  _id: string;
+  title: string;
+  description: string;
+  targetAmount: number;
+  currentAmount: number;
+  endDate: string;
+  tag: string;
+  whyCare: [string];
+  publickKey: [string];
+  creator: string;
+  campaignProgramId: string;
+  campaignImage: string;
+}
+
+export interface DateObject {
+  range: string,
+  rangeDuration: number,
+}
   

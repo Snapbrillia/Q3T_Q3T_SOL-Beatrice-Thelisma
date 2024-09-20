@@ -17,4 +17,6 @@ const connectDB = async () => {
     }
 };
 
-module.exports = connectDB;
+const conn = mongoose.createConnection(process.env.MONGO_URI);
+
+module.exports = { connectDB, conn };

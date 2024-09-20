@@ -1,4 +1,5 @@
 // src/api/auth.ts
+import { Navigate } from 'react-router';
 import apiClient from './apiClient';
 
 // Define types for requests and responses

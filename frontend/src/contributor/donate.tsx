@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAnchorWallet, useWallet } from "@solana/wallet-adapter-react";
 import { clusterApiUrl, Connection } from "@solana/web3.js";
 import * as anchor from "@coral-xyz/anchor";
@@ -6,27 +6,21 @@ import WalletConnectButton from "./connectWalletButton";
 import "./donate.css";
 import importedWallet from "./utils/wallet.json";
 import { useParams } from "react-router-dom";
-// import saveFile from "./utils/saveFile";
-import itemsList from "./data.json";
-// import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import createContribution from "./utils/contribute";
-
-interface Campaign {
-  id: number;
-  backgroundImage: string;
-  mainTitle: string;
-  description: string;
-  content: string;
-  tag: string;
-  aim: string;
-  title: string;
-  whyCareList: string[];
-}
+import { getCampaignById, updateCampaign } from "../api/campaign";
+import { getImage } from "../api/fileApi";
+import { getRemainingTime } from "../components/getDate";
+import { Campaign } from "../api/types";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import Input from "../fundraiser/atom/Input";
 
 export default function Donate() {
-  let { id } = useParams();
-  
+  const [campaign, setCampaign] = useState<Campaign | null>(null);
+  const { id } = useParams();
+  const [imageUrl, setImageUrl] = useState("");
+  const [amount, setAmount] = useState("0");
+
   // const network = WalletAdapterNetwork.Devnet;
   const { publicKey } = useWallet();
 
@@ -34,17 +28,11 @@ export default function Donate() {
     new Uint8Array(importedWallet)
   );
 
-  const items: Campaign[] = itemsList;
-
   console.log(baseAccount.publicKey.toString());
 
   const wallet = useAnchorWallet();
 
-  const parsedId = id ? Number(id) : null;
-
-  if (parsedId === null || isNaN(parsedId) || parsedId >= itemsList.length) {
-    return <div>Invalid Campaign ID</div>;
-  }
+  const parsedId = id ? id : null;
 
   function getProvider() {
     if (!wallet) {
@@ -60,20 +48,90 @@ export default function Donate() {
     return provider;
   }
 
+  const fetchCampaign = async () => {
+    if (id) {
+      try {
+        const data = await getCampaignById(id);
+        setCampaign(data); // Set the campaign data
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const image = await getImage(data.campaignImage);
+        setImageUrl(image); //
+      } catch (error) {
+        console.error("Error fetching campaign:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchCampaign();
+  }, [id]);
+
   const contribute = async () => {
+    if (!wallet) {
+      toast.error("Please connect wallet to continue", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+    if (Number(amount) <= 0) {
+      toast.error("Amount must not be 0", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
     if (publicKey && wallet) {
-      await createContribution(publicKey, getProvider(), baseAccount);
-      // toast.success("Account Initialization Successful", {
-      //   position: "top-right",
-      //   autoClose: 5000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "light",
-      //   transition: Bounce,
-      // });
+      const id = toast.loading(
+        "initializing wallet for fundraising campaign contribution..."
+      );
+      const hash = await createContribution(
+        publicKey,
+        getProvider(),
+        baseAccount,
+        amount
+      );
+      if (!hash) {
+        toast.update(id, {
+          render: "Initialization Failed",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
+      }
+      try {
+        await updateCampaign(parsedId, {
+          publicKey: getProvider()?.wallet.publicKey,
+          amount: Number(amount),
+        });
+      } catch (e) {
+        toast.update(id, {
+          render: "an error occurred",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
+      }
+      toast.update(id, {
+        render: "Initialization Successful and Contributions Successful",
+        type: "success",
+        isLoading: false,
+        autoClose: 5000,
+      });
     } else {
       console.log("failed to initialize and load wallet");
     }
@@ -83,25 +141,32 @@ export default function Donate() {
     <div
       className="body"
       style={{
-        backgroundImage: `linear-gradient(rgba(200, 70, 87, 0.3), rgba(133, 54, 95, 0.8)), url(${items[parsedId].backgroundImage})`,
+        marginTop: -25,
+        backgroundImage: `linear-gradient(rgba(200, 70, 87, 0.3), rgba(133, 54, 95, 0.8)), url(${imageUrl})`,
       }}
     >
-      <WalletConnectButton />
       <div id="app" className="donate-funding">
+        <ToastContainer />
+        <WalletConnectButton />
         <div>
           <div className="donate-funding__header">
             <div className="donate-funding__header__description">
-              <h1>{items[parsedId].title}</h1>
-              <p>{items[parsedId].aim}</p>
-              <div className="hashtags">{items[parsedId].tag}</div>
+              <h1>{campaign?.title}</h1>
+              <p>{campaign?.title}</p>
+              <div className="hashtags">{campaign?.tag}</div>
             </div>
 
             <div className="donate-funding__header__details">
-              <h1>25</h1>
-              <p className="days-to-go">days to go</p>
+              <h5 className="days-to-go">
+                {getRemainingTime(campaign?.endDate)}
+              </h5>
+              {/* <p className="days-to-go">days to go</p> */}
               <div className="funding-counter">
                 <p>
-                  <strong>$400 / $1000 raised</strong>
+                  <strong>
+                    Sol {campaign?.targetAmount} / SOL{campaign?.currentAmount}{" "}
+                    raised
+                  </strong>
                 </p>
                 <div className="funding-counter__bar"></div>
               </div>
@@ -116,12 +181,30 @@ export default function Donate() {
               >
                 <path d="M 26.978516 3.0214844 C 26.978516 3.0214844 18 3 11 10 C 10.676811 10.323189 10.395406 10.675024 10.140625 11.039062 C 8.8995439 10.939831 6.9997651 10.972248 6.0273438 11.945312 C 3.7573437 14.215312 3 18 3 18 L 8 17.285156 L 8 19 L 11 22 L 12.714844 22 L 12 27 C 12 27 15.784688 26.242656 18.054688 23.972656 C 19.027752 23.000235 19.060169 21.100456 18.960938 19.859375 C 19.324976 19.604594 19.676811 19.323189 20 19 C 27 12 26.978516 3.0214844 26.978516 3.0214844 z M 19 9 C 20.105 9 21 9.895 21 11 C 21 12.105 20.105 13 19 13 C 17.895 13 17 12.105 17 11 C 17 9.895 17.895 9 19 9 z M 7.1992188 19.996094 C 6.8192188 20.096094 6.4591094 20.286984 6.1621094 20.583984 C 4.7961094 21.949984 5.0136719 24.984375 5.0136719 24.984375 C 5.0136719 24.984375 8.0281094 25.219938 9.4121094 23.835938 C 9.7091094 23.538937 9.9 23.176875 10 22.796875 L 9.5429688 22.339844 C 9.4979688 22.403844 9.4701094 22.478156 9.4121094 22.535156 C 8.4371094 23.510156 6.9746094 23.023438 6.9746094 23.023438 C 6.9746094 23.023438 6.4868906 21.560938 7.4628906 20.585938 C 7.5208906 20.527938 7.59225 20.501078 7.65625 20.455078 L 7.1992188 19.996094 z"></path>
               </svg>
-              <h4>{items[parsedId].mainTitle}</h4>
-              <span className="content">{items[parsedId].description}</span>
-              <span className="content">{items[parsedId].content}</span>
+              <h4>{campaign?.title}</h4>
+              <span className="content">{campaign?.description}</span>
+              <span className="content">{campaign?.description}</span>
+              <div>
+                <Input
+                  id="title"
+                  name="title"
+                  type="number"
+                  className="mt-4"
+                  htmlFor="title"
+                  label={
+                    <>
+                      Amount of SOL to donate
+                      <span className="font-bold text-red-500">*</span>
+                    </>
+                  }
+                  value={amount}
+                  required
+                  onChange={(e) => setAmount(e.target.value)}
+                />
+              </div>
               <div className="button">
                 <strong onClick={() => contribute()}>
-                  <small>donate now</small>
+                  <small>Confirm</small>
                 </strong>
               </div>
             </div>
@@ -139,7 +222,7 @@ export default function Donate() {
                 decide:
               </h4>
               <ul>
-                {items[parsedId]?.whyCareList?.map((val: any) => (
+                {campaign?.whyCare?.map((val: any) => (
                   <li className="list-content">{val}</li>
                 ))}
               </ul>

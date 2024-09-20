@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "../atom/Button";
 import SectionHeader from "../atom/SectionHeader";
 import Input from "../atom/Input";
-import { createCampaign } from "../../api/campaign";
+import { checkCampaign, createCampaign } from "../../api/campaign";
 import { useNavigate } from "react-router";
 import { useCreateCampaignStore } from "../util/store";
 import { IoIosArrowBack } from "react-icons/io";
@@ -11,30 +11,41 @@ import { clusterApiUrl, Connection } from "@solana/web3.js";
 import * as anchor from "@coral-xyz/anchor";
 import importedWallet from "../../contributor/utils/wallet.json";
 import initialize from "../../contributor/utils/initialize";
+import { uploadImage } from "../../api/fileApi";
+import { Bounce, toast, ToastContainer } from "react-toastify";
+import { convertWallet } from "../../contributor/utils/convertKeys";
 
-// how to create funraiser
+interface CampaignCreation {
+  title: string;
+  description: string;
+  targetAmount: number;
+  whyCare: [string];
+  endDate: string;
+  tag: string;
+}
 
 const CreateCampaign = () => {
-  const initialData = {
+  const initialData: CampaignCreation = {
     title: "",
     description: "",
-    targetAmount: "",
-    whyCare: "",
+    targetAmount: 0,
+    whyCare: [""],
     endDate: "",
     tag: "",
     // uploadFile: "",
   };
   const [inputValue, setInputValue] = useState<any>(initialData);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [uploadedFilename, setUploadedFilename] = useState<string>("");
   const navigate = useNavigate();
   const { updateCampaginDetails } = useCreateCampaignStore();
 
   const { publicKey } = useWallet();
 
-  const baseAccount = anchor.web3.Keypair.fromSecretKey(
-    new Uint8Array(importedWallet)
-  );
-
-  console.log(baseAccount.publicKey.toString());
+  const baseAccount = anchor.web3.Keypair.generate();
+  // console.log(convertWallet(baseAccount.secretKey));
+  // const baseAccount = anchor.web3.Keypair.generate();
+  // console.log(baseAccount);
 
   const wallet = useAnchorWallet();
   function getProvider() {
@@ -64,47 +75,155 @@ const CreateCampaign = () => {
     });
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = async (): Promise<string | null> => {
+    if (!selectedFile) {
+      toast.error("Please select an image for campaign", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        transition: Bounce,
+      });
+      return null;
+    }
+
+    try {
+      const data = await uploadImage(selectedFile);
+      setUploadedFilename(data.filename);
+      return data.filename; // Assuming backend responds with file information
+    } catch (error) {
+      toast.error("Error Uploading Image", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        transition: Bounce,
+      });
+      return null;
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const id = toast.loading("Create and initializing fundraising campaign...");
+    const checkStatus = await checkCampaign();
+    console.log(checkStatus);
+    if (checkStatus.message !== "false") {
+      toast.warning("You already have an active campaign running", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
 
     if (publicKey && wallet) {
-      await initialize(publicKey, getProvider(), baseAccount);
-      // toast.success("Account Initialization Successful", {
-      //   position: "top-right",
-      //   autoClose: 5000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   pauseOnHover: true,
-      //   draggable: true,
-      //   progress: undefined,
-      //   theme: "light",
-      //   transition: Bounce,
-      // });
+      if (initialData.targetAmount < 1 || !initialData.endDate) {
+        toast.error("correct details were not passed", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
+      await initialize(
+        publicKey,
+        getProvider(),
+        baseAccount,
+        initialData.endDate,
+        initialData.targetAmount
+      )
+        .then(async (response) => {
+          if (response) {
+            let fileName = await handleUpload();
+            if (!fileName) return;
+            const formData = {
+              ...inputValue,
+              whyCare: inputValue.whyCare.split("|"),
+              campaignImage: fileName,
+              campaignProgramId: response,
+              privateKey: convertWallet(baseAccount.secretKey),
+              publickKey: baseAccount.publicKey,
+            };
+            try {
+              const createdCampaign = await createCampaign(formData);
+              if (createdCampaign) {
+                toast.update(id, {
+                  render: "Initialization Successful",
+                  type: "success",
+                  isLoading: false,
+                  autoClose: 5000,
+                });
+                toast.success("Fundraising Campaign Created Successfully", {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                  transition: Bounce,
+                });
+                setTimeout(() => {
+                  updateCampaginDetails(createdCampaign);
+                  navigate("/dashboard");
+                }, 5000);
+              }
+
+              console.log(createdCampaign);
+            } catch (error) {
+              toast.update(id, {
+                render: "Initialization Failed",
+                type: "error",
+                isLoading: false,
+              });
+              console.error("Error creating campaign:", error);
+            }
+          }
+        })
+        .catch(() => {
+          toast.update(id, {
+            render: "Initialization Failed",
+            type: "error",
+            autoClose: 5000,
+            isLoading: false,
+          });
+        });
     } else {
       console.log("failed to initialize and load wallet");
     }
-
-    // const formData = {
-    //   ...inputValue,
-    //   whyCare: inputValue.whyCare.split("|"),
-    //   // tag: inputValue.tag.split('#').filter(Boolean),
-    // };
-
-    // try {
-    //   const createdCampaign = await createCampaign(formData);
-    //   if (createdCampaign) {
-    //     updateCampaginDetails(createdCampaign);
-    //     navigate("/dashboard");
-    //   }
-
-    //   console.log(createdCampaign);
-    // } catch (error) {
-    //   console.error("Error creating campaign:", error);
-    // }
   };
 
   return (
     <main className="bg-graidnt_bg items-center w-[90vw] justify-center overflow-y-auto lg:flex lg:overflow-y-clip">
+      <ToastContainer />
       <div
         onClick={() => navigate(-1)}
         className=" absolute top-5 left-5 hidden lg:flex items-center text-black  text-[20px] cursor-pointer"
@@ -169,7 +288,8 @@ const CreateCampaign = () => {
             label={
               <>
                 <div>
-                  Target amount<span className="font-bold text-red-500">*</span>
+                  Target amount in SOL
+                  <span className="font-bold text-red-500">*</span>
                 </div>
                 <i>
                   Write down the amount you intend raising for this campaign
@@ -206,7 +326,7 @@ const CreateCampaign = () => {
           <Input
             id="endDate"
             name="endDate"
-            type="date"
+            type="datetime-local"
             className="mt-4"
             htmlFor="endDate"
             label={
@@ -248,7 +368,7 @@ const CreateCampaign = () => {
               </>
             }
             value={inputValue.uploadFile}
-            onChange={handleChanges}
+            onChange={handleFileChange}
           />
           <Button className="bg-primary_color text-white py-4 text-[1.2rem] mt-3 ">
             Create campaign

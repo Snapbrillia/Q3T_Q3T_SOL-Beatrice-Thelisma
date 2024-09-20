@@ -56,8 +56,8 @@ apiClient.interceptors.response.use(
       // Refresh token API call
       const refreshToken = getRefreshToken();
       try {
-        const { data } = await axios.post(`${baseURL}/auth/refresh-token`, {
-          refreshToken: refreshToken,
+        const { data } = await axios.post(`${baseURL}/api/auth/refresh`, {
+          token: refreshToken,
         });
 
         // Save new access token

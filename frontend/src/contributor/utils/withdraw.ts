@@ -7,7 +7,7 @@ import VaultWallet from './vault.json'
 
 
 
-export default async function initialize(
+export default async function withdraw(
   connectedPublicKey: PublicKey,
   provider: any,
   baseAccount: any,
@@ -37,11 +37,11 @@ export default async function initialize(
 
   const initialize = async () => {
     const initInstruction = await program.methods
-      .check_contributions()
+      .withdraw()
       .accountsPartial({
         maker: baseAccount.publicKey, // baseAccount as maker
         fundraiser: fundraiser,
-        vault: vaultKeypair.publicKey,
+        feeCollector : provider.wallet.publicKey,
         systemProgram: SystemProgram.programId,
       })
       .instruction(); // Make sure to await this
@@ -56,7 +56,8 @@ export default async function initialize(
     transaction.feePayer = provider.wallet.publicKey;
 
     try {
-      const signature = await provider.sendAndConfirm(transaction, [baseAccount, vaultKeypair]).then(confirm); // baseAccount passed as signer
+      const signature = await provider.sendAndConfirm(transaction, [baseAccount]); // baseAccount passed as signer
+      await confirm(signature);
       console.log("Transaction sent with signature:", signature);
       return signature;
     } catch (error) {

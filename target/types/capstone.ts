@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/capstone.json`.
  */
 export type Capstone = {
-  "address": "2cMNzY4mpPpxLVy2iF7ee93gBm4mGnQx6qW9kqzrJymY",
+  "address": "CEsmX47xiPVyeaBcH6mmgkwGNQhU77Xwim7mSTez5cK4",
   "metadata": {
     "name": "capstone",
     "version": "0.1.0",

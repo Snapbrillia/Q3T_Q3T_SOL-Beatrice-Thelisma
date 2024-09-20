@@ -8,6 +8,8 @@ export default async function initialize(
   connectedPublicKey: PublicKey,
   provider: any,
   baseAccount: any,
+  campaignDeadline: string,
+  campaignAmount: number
 ) {
 
   const generate = JSON.stringify(IDL);
@@ -19,9 +21,6 @@ export default async function initialize(
     program.programId
   )[0];
 
-  // const vaultKeypair = anchor.web3.Keypair.fromSecretKey(new Uint8Array(VaultWallet));
-
-
   const confirm = async (signature: string): Promise<string> => {
     const block = await provider.connection.getLatestBlockhash();
     await provider.connection.confirmTransaction({
@@ -32,11 +31,16 @@ export default async function initialize(
     return signature;
   };
 
-  const initialize = async () => {
-    const deadline = Math.floor(new Date("2024-9-31").getTime() / 1000);
+  const lamports = 1 * anchor.web3.LAMPORTS_PER_SOL;
+  const airdropSignature = await provider.connection.requestAirdrop(baseAccount.publicKey, lamports);
+  await provider.connection.confirmTransaction(airdropSignature);
+  console.log(airdropSignature);
+  console.log("end airdrop signature");
 
+  const initialize = async () => {
+    const deadline = Math.floor(new Date(campaignDeadline).getTime() / 1000);
     const initInstruction = await program.methods
-      .initialize(new anchor.BN(30000000), new anchor.BN(deadline))
+      .initialize(new anchor.BN(campaignAmount * 1000000000), new anchor.BN(deadline))
       .accountsPartial({
         maker: baseAccount.publicKey, // baseAccount as maker
         fundraiser: fundraiser,
