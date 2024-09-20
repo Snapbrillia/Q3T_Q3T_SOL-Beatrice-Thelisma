@@ -145,7 +145,7 @@ const ViewCampaign = () => {
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between absolute bottom-[20px] text-white  px-8 w-full">
           <div className="w-full lg:w-[50%]">
             <h3 className=" text-[1.8rem] md:text-[2.5rem] font-bold">
-              {campaign?.title} {campaignID}
+              {campaign?.title}
             </h3>
             <p className="hidde text-[.8rem] md:text-[1rem]">
               {campaign?.description}
@@ -162,8 +162,10 @@ const ViewCampaign = () => {
           </div>
           <div className="">
             <div className="font-bold">
-              <span className="text-[2rem]">SOL{campaign?.targetAmount} </span>
-              <span className="">/SOL{campaign?.currentAmount} raised</span>
+              <span className="text-[2rem]">
+                SOL {campaign?.currentAmount}{" "}
+              </span>
+              <span className="">/SOL {campaign?.currentAmount} raised</span>
             </div>
             <span className="block bg-progress_bar border-[1px] border-[white] mt-1 h-[8px] w-full"></span>
             <Button
@@ -188,7 +190,7 @@ const ViewCampaign = () => {
           <Card
             icon={<MdSupervisedUserCircle className="text-[1.6rem]" />}
             title="Number of Contributors"
-            result={campaign?.publickKey?.length.toString()}
+            result={campaign?.contributorsPublicKeys?.length.toString()}
             active={false}
           />
           <Card

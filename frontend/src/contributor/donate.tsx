@@ -164,11 +164,11 @@ export default function Donate() {
               <div className="funding-counter">
                 <p>
                   <strong>
-                    Sol {campaign?.targetAmount} / SOL{campaign?.currentAmount}{" "}
+                    Sol {campaign?.targetAmount} / SOL {campaign?.currentAmount}{" "}
                     raised
                   </strong>
                 </p>
-                <div className="funding-counter__bar"></div>
+                {/* <div className="funding-counter__bar"></div> */}
               </div>
             </div>
           </div>

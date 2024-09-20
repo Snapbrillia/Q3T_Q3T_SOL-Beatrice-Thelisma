@@ -117,11 +117,11 @@ const updateCampaign = async (req, res) => {
         if (!activeCampaign) {
             return res.status(200).json({ message: 'No campaign found.' });
         }
-        const keys = activeCampaign.publickKey || [];
+        const keys = activeCampaign.contributorsPublicKeys || [];
         keys.push(publicKey);
         activeCampaign.
             currentAmount = Number(activeCampaign.currentAmount) + Number(amount);
-        activeCampaign.publickKey = keys
+        activeCampaign.contributorsPublicKeys = keys
         await activeCampaign.save();
 
         return res.status(200).json(activeCampaign);

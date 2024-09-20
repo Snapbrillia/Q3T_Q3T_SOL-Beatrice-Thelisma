@@ -13,6 +13,7 @@ export interface Campaign {
   creator: string;
   campaignProgramId: string;
   campaignImage: string;
+  contributorsPublicKeys: string,
 }
 
 export interface DateObject {

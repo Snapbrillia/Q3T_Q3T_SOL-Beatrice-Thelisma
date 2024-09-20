@@ -7,6 +7,10 @@ import items from "./data.json";
 import { getAllCampaigns, getAllCampaignsRoute } from "../api/campaign.ts";
 import { Campaign } from "../api/types/index.ts";
 import { getImage } from "../api/fileApi.ts";
+import {
+  getRemainingTime,
+  getRemainingTimeOnly,
+} from "../components/getDate.ts";
 
 export default function Home() {
   const [activeNum, setActiveNum] = useState(0);
@@ -128,13 +132,16 @@ export default function Home() {
               </div>
 
               <div className="crowd-funding__header__details">
-                <h1>25</h1>
-                <p className="days-to-go">days to go</p>
+                <h1>{getRemainingTime(allCampaigns[activeNum].endDate)}</h1>
+                {/* <p className="days-to-go">days to go</p> */}
                 <div className="funding-counter">
                   <p>
-                    <strong>$400 / $1000 raised</strong>
+                    <strong>
+                      ${allCampaigns[activeNum].targetAmount} / $
+                      {allCampaigns[activeNum].currentAmount} raised
+                    </strong>
                   </p>
-                  <div className="funding-counter__bar"></div>
+                  {/* <div className="funding-counter__bar"></div> */}
                 </div>
               </div>
             </div>

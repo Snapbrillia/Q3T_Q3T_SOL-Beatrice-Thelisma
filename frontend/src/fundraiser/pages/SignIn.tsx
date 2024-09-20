@@ -24,7 +24,8 @@ const SignIn = () => {
   const location = useLocation();
 
   // Get the intended route from location state (default is home)
-  const from = (location.state as LocationState)?.from?.pathname || "/";
+  const from =
+    (location.state as LocationState)?.from?.pathname || "/dashboard";
 
   const handleChanges = (
     e:

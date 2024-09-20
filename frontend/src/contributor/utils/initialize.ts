@@ -3,6 +3,7 @@ import { Program } from "@coral-xyz/anchor";
 import { PublicKey, SystemProgram, } from "@solana/web3.js";
 import IDL from "./capstone.json";
 import { Buffer } from "buffer";
+import { Connection, LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 export default async function initialize(
   connectedPublicKey: PublicKey,
@@ -30,12 +31,6 @@ export default async function initialize(
     console.log(signature);
     return signature;
   };
-
-  const lamports = 1 * anchor.web3.LAMPORTS_PER_SOL;
-  const airdropSignature = await provider.connection.requestAirdrop(baseAccount.publicKey, lamports);
-  await provider.connection.confirmTransaction(airdropSignature);
-  console.log(airdropSignature);
-  console.log("end airdrop signature");
 
   const initialize = async () => {
     const deadline = Math.floor(new Date(campaignDeadline).getTime() / 1000);

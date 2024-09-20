@@ -18,9 +18,7 @@ import { convertWallet } from "../../contributor/utils/convertKeys";
 interface CampaignCreation {
   title: string;
   description: string;
-  targetAmount: number;
   whyCare: [string];
-  endDate: string;
   tag: string;
 }
 
@@ -28,24 +26,27 @@ const CreateCampaign = () => {
   const initialData: CampaignCreation = {
     title: "",
     description: "",
-    targetAmount: 0,
     whyCare: [""],
-    endDate: "",
     tag: "",
     // uploadFile: "",
   };
   const [inputValue, setInputValue] = useState<any>(initialData);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [uploadedFilename, setUploadedFilename] = useState<string>("");
+  const [amount, setAmount] = useState<string>("");
+  const [datetime, setDatetime] = useState<string>("");
   const navigate = useNavigate();
   const { updateCampaginDetails } = useCreateCampaignStore();
 
   const { publicKey } = useWallet();
 
-  const baseAccount = anchor.web3.Keypair.generate();
+  const baseAccount = anchor.web3.Keypair.fromSecretKey(
+    new Uint8Array(importedWallet)
+  );
   // console.log(convertWallet(baseAccount.secretKey));
   // const baseAccount = anchor.web3.Keypair.generate();
-  // console.log(baseAccount);
+  // console.log(baseAccount.secretKey);
+  console.log(baseAccount.publicKey);
 
   const wallet = useAnchorWallet();
   function getProvider() {
@@ -79,6 +80,23 @@ const CreateCampaign = () => {
     if (e.target.files && e.target.files[0]) {
       setSelectedFile(e.target.files[0]);
     }
+  };
+
+  function handleChangeDate(ev: any) {
+    if (!ev.target["validity"].valid) return;
+    const dt = ev.target["value"] + ":00Z";
+    setDatetime(dt);
+  }
+
+  const formatDateForInput = (datetimeString: any) => {
+    const date = new Date(datetimeString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // Add leading 0
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
   };
 
   const handleUpload = async (): Promise<string | null> => {
@@ -138,17 +156,13 @@ const CreateCampaign = () => {
     }
 
     if (publicKey && wallet) {
-      if (initialData.targetAmount < 1 || !initialData.endDate) {
-        toast.error("correct details were not passed", {
-          position: "top-right",
+      console.log(amount);
+      if (!amount || !datetime) {
+        toast.update(id, {
+          render: "Incorrect details were passed",
+          type: "error",
+          isLoading: false,
           autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          transition: Bounce,
         });
         return;
       }
@@ -156,8 +170,8 @@ const CreateCampaign = () => {
         publicKey,
         getProvider(),
         baseAccount,
-        initialData.endDate,
-        initialData.targetAmount
+        datetime,
+        Number(amount)
       )
         .then(async (response) => {
           if (response) {
@@ -170,6 +184,8 @@ const CreateCampaign = () => {
               campaignProgramId: response,
               privateKey: convertWallet(baseAccount.secretKey),
               publickKey: baseAccount.publicKey,
+              endDate: datetime,
+              targetAmount: amount,
             };
             try {
               const createdCampaign = await createCampaign(formData);
@@ -296,9 +312,9 @@ const CreateCampaign = () => {
                 </i>{" "}
               </>
             }
-            value={inputValue.targetAmount}
+            value={amount}
             required
-            onChange={handleChanges}
+            onChange={(e) => setAmount(e.target.value)}
           />
           <div className="my-[16px]">
             <label
@@ -306,7 +322,7 @@ const CreateCampaign = () => {
               htmlFor="whyCare"
             >
               <div className="">
-                Why should do you need to fundraise
+                Why should the contributor care ?
                 <span className="font-bold text-red-500">*</span>
               </div>
               <i>Separate each reason with </i>
@@ -335,8 +351,8 @@ const CreateCampaign = () => {
                 <span className="font-bold text-red-500">*</span>
               </>
             }
-            value={inputValue.endDate}
-            onChange={handleChanges}
+            value={formatDateForInput(datetime)}
+            onChange={handleChangeDate}
             required
           />
           <Input
