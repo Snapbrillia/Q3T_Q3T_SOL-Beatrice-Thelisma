@@ -15,7 +15,7 @@ const CampaignSchema = new mongoose.Schema({
         required: true,
     },
     currentAmount: {
-        type: Number,
+        type: String,
         default: 0,
     },
     creator: {
@@ -25,14 +25,30 @@ const CampaignSchema = new mongoose.Schema({
     },
     tag: String,
     whyCare: [],
+    contributorsPublicKeys: [],
     endDate: {
         type: Date,
         default: Date.now,
     },
+    campaignImage: {
+        type: String,
+        required: true,
+    },
+    campaignProgramId: {
+        type: String,
+        // required: true,
+    },
+    privateKey: String,
+    publickKey: [String],
     createdAt: {
         type: Date,
         default: Date.now,
     },
+    status: {
+        type: String,
+        enum: ["Active", "Inactive", "Completed"],
+        default: "Active",
+    }
 });
 
 module.exports = mongoose.model('Campaign', CampaignSchema);

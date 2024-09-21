@@ -1,7 +1,7 @@
 // routes/campaignRoutes.js
 const { check } = require('express-validator');
 const app = require('express');
-const { getAllCampaigns, getCampaignById, createCampaign } = require('../controllers/campaignController');
+const { getAllCampaigns, getCampaignById, createCampaign, checkActiveCampaign, getAllCampaignsRoute, updateCampaign, updateCampaignClose } = require('../controllers/campaignController');
 const protect = require('../middleware/authMiddleware');
 
 // Add validation for campaign creation
@@ -18,10 +18,18 @@ router.post(
     createCampaign
 );
 
-router.get('/', getAllCampaigns);
+router.get('/', protect, getAllCampaigns);
+
+router.get('/all', getAllCampaignsRoute);
+
+router.put('/:id', updateCampaign);
+
+router.put('/close/:id', updateCampaignClose);
+
+router.get('/check', protect, checkActiveCampaign);
 
 // Route to get a campaign by ID (public)
-router.get('/:id', getCampaignById);
+router.get('/:id', protect, getCampaignById);
 
 
 module.exports = router;

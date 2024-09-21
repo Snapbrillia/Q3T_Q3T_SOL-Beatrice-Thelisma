@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/capstone.json`.
  */
 export type Capstone = {
-  "address": "5PEiejjMZfsefWvV63HYD8Nry52bY3r6N3cWigccxs7m",
+  "address": "CEsmX47xiPVyeaBcH6mmgkwGNQhU77Xwim7mSTez5cK4",
   "metadata": {
     "name": "capstone",
     "version": "0.1.0",
@@ -13,62 +13,6 @@ export type Capstone = {
     "description": "Created with Anchor"
   },
   "instructions": [
-    {
-      "name": "checkContributions",
-      "discriminator": [
-        188,
-        45,
-        184,
-        27,
-        146,
-        96,
-        153,
-        5
-      ],
-      "accounts": [
-        {
-          "name": "maker",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "fundraiser",
-          "writable": true,
-          "pda": {
-            "seeds": [
-              {
-                "kind": "const",
-                "value": [
-                  102,
-                  117,
-                  110,
-                  100,
-                  114,
-                  97,
-                  105,
-                  115,
-                  101,
-                  114
-                ]
-              },
-              {
-                "kind": "account",
-                "path": "maker"
-              }
-            ]
-          }
-        },
-        {
-          "name": "vault",
-          "writable": true
-        },
-        {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
-        }
-      ],
-      "args": []
-    },
     {
       "name": "contribute",
       "discriminator": [
@@ -148,10 +92,6 @@ export type Capstone = {
           }
         },
         {
-          "name": "vault",
-          "writable": true
-        },
-        {
           "name": "systemProgram",
           "address": "11111111111111111111111111111111"
         }
@@ -207,11 +147,6 @@ export type Capstone = {
               }
             ]
           }
-        },
-        {
-          "name": "vault",
-          "writable": true,
-          "signer": true
         },
         {
           "name": "systemProgram",
@@ -310,8 +245,60 @@ export type Capstone = {
           }
         },
         {
-          "name": "vault",
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "withdraw",
+      "discriminator": [
+        183,
+        18,
+        70,
+        156,
+        148,
+        109,
+        161,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "maker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "feeCollector",
           "writable": true
+        },
+        {
+          "name": "fundraiser",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102,
+                  117,
+                  110,
+                  100,
+                  114,
+                  97,
+                  105,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "maker"
+              }
+            ]
+          }
         },
         {
           "name": "systemProgram",
@@ -347,39 +334,36 @@ export type Capstone = {
         204,
         196
       ]
-    },
-    {
-      "name": "vault",
-      "discriminator": [
-        211,
-        8,
-        232,
-        43,
-        2,
-        152,
-        117,
-        119
-      ]
     }
   ],
   "errors": [
     {
       "code": 6000,
+      "name": "refundsDisabled",
+      "msg": "This fundraiser does not allow refunds"
+    },
+    {
+      "code": 6001,
+      "name": "deadlinePast",
+      "msg": "The deadline must be in the future"
+    },
+    {
+      "code": 6002,
       "name": "targetNotMet",
       "msg": "The amount to raise has not been met"
     },
     {
-      "code": 6001,
+      "code": 6003,
       "name": "targetMet",
       "msg": "The amount to raise has been achieved"
     },
     {
-      "code": 6002,
+      "code": 6004,
       "name": "fundraiserNotEnded",
       "msg": "The fundraiser has not ended yet"
     },
     {
-      "code": 6003,
+      "code": 6005,
       "name": "fundraiserEnded",
       "msg": "The fundraiser has ended"
     }
@@ -423,13 +407,6 @@ export type Capstone = {
             "type": "u8"
           }
         ]
-      }
-    },
-    {
-      "name": "vault",
-      "type": {
-        "kind": "struct",
-        "fields": []
       }
     }
   ]

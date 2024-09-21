@@ -5,10 +5,10 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-capstone = "5PEiejjMZfsefWvV63HYD8Nry52bY3r6N3cWigccxs7m"
+capstone = "CEsmX47xiPVyeaBcH6mmgkwGNQhU77Xwim7mSTez5cK4"
 
 [programs.localnet]
-capstone = "5PEiejjMZfsefWvV63HYD8Nry52bY3r6N3cWigccxs7m"
+capstone = "CEsmX47xiPVyeaBcH6mmgkwGNQhU77Xwim7mSTez5cK4"
 
 [registry]
 url = "https://api.apr.dev"
