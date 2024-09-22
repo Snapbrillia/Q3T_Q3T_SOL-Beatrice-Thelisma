@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/capstone.json`.
  */
 export type Capstone = {
-  "address": "CEsmX47xiPVyeaBcH6mmgkwGNQhU77Xwim7mSTez5cK4",
+  "address": "yBFyEKPqF5UKrg4rhKZesNpp9LQoZqVH7fe6jSkbBhr",
   "metadata": {
     "name": "capstone",
     "version": "0.1.0",
@@ -102,6 +102,58 @@ export type Capstone = {
           "type": "u64"
         }
       ]
+    },
+    {
+      "name": "extend",
+      "discriminator": [
+        228,
+        127,
+        0,
+        1,
+        227,
+        154,
+        54,
+        168
+      ],
+      "accounts": [
+        {
+          "name": "maker",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "fundraiser",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  102,
+                  117,
+                  110,
+                  100,
+                  114,
+                  97,
+                  105,
+                  115,
+                  101,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "maker"
+              }
+            ]
+          }
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
     },
     {
       "name": "initialize",
@@ -366,6 +418,11 @@ export type Capstone = {
       "code": 6005,
       "name": "fundraiserEnded",
       "msg": "The fundraiser has ended"
+    },
+    {
+      "code": 6006,
+      "name": "maxExtensionsReached",
+      "msg": "The maximum number of deadline extensions has been reached"
     }
   ],
   "types": [
@@ -401,6 +458,10 @@ export type Capstone = {
           {
             "name": "deadline",
             "type": "i64"
+          },
+          {
+            "name": "extensions",
+            "type": "u8"
           },
           {
             "name": "bump",
