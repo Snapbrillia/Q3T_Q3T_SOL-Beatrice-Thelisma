@@ -21,7 +21,7 @@ const createCampaign = async (req, res) => {
             creator: req.user._id,
             campaignProgramId,
             campaignImage,
-            privatekey,
+            privateKey,
             publickKey, // User is added to request by the auth middleware
         });
 

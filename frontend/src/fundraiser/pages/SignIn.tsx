@@ -119,7 +119,7 @@ const SignIn = () => {
           </div>
         </div>
         <Button className="bg-primary_color text-white py-4 text-[1.2rem] mt-9 border-[1.5px] border-solid hover:text-primary_color hover:bg-transparent hover:border-primary_color ">
-          Create acount
+          Sign In
         </Button>
         <p className="mt-3">
           Don't have an account,{" "}

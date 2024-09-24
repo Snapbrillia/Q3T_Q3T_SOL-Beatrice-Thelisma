@@ -34,6 +34,7 @@ const ViewCampaign = () => {
     if (campaignID) {
       try {
         const data = await getCampaignById(campaignID);
+        console.log(data);
         setCampaign(data); // Set the campaign data
         // eslint-disable-next-line react-hooks/exhaustive-deps
         const image = await getImage(data.campaignImage);
@@ -170,6 +171,13 @@ const ViewCampaign = () => {
             <span className="block bg-progress_bar border-[1px] border-[white] mt-1 h-[8px] w-full"></span>
             <Button
               onClick={() => handleSubmit()}
+              disabled={true}
+              className="bg-[#512da8]  hover:bg-[#1a1f2e] mt-5 py-3 text-[1.1rem] disabled:bg-[#512da8] disabled:cursor-default disabled:opacity-80"
+            >
+              Extend Campaign Time
+            </Button>
+            <Button
+              onClick={() => handleSubmit()}
               disabled={false}
               className="bg-[#512da8]  hover:bg-[#1a1f2e] mt-5 py-3 text-[1.1rem] disabled:bg-[#512da8] disabled:cursor-default disabled:opacity-80"
             >
@@ -247,7 +255,7 @@ const ViewCampaign = () => {
                 <input
                   className="mx-2  w-[400px]"
                   readOnly
-                  value={"asjhdvcjhbaksdcjasdcbvajhc vasd vhasd cvsdjcvajsdb"}
+                  value={campaign?.privateKey}
                 />
                 <FaCopy
                   className="cursor-pointer"
