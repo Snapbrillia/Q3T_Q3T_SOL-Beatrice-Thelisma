@@ -69,7 +69,7 @@ const SignIn = () => {
   };
 
   return (
-    <main className="sbg-gsraidnt_bg items-center h-[90vh] w-[80vw] justify-between overflow-y-auto lg:flex flex-col lg:overflow-y-clip">
+    <main className="items-center h-screen w-[80vw]  overflow-y-auto lg:flex flex-col lg:overflow-y-clip">
       <div className="h-auto  sself-start w-full   bg-[#FBECF] sticky lg:flex flex-col itfems-center  dlg:h-screen  md:px-[31px] lg:text-left lg:px-[3%] lg:w-[45%] ">
         <ToastContainer />
         <SectionHeader
