@@ -38,12 +38,6 @@ impl<'info> Withdraw<'info> {
             FundraiserError::FundraiserNotEnded
         );
 
-        // Check that the target amount has been met
-        require!(
-            self.fundraiser.current_amount >= self.fundraiser.amount_to_raise,
-            FundraiserError::TargetNotMet
-        );
-
         let wallet_collect_fees_key = Pubkey::from_str(if MAINNET {MAINNET_FEES_WALLET} else {DEVNET_FEES_WALLET}).unwrap();
 
         // Check our pubKey is the same as the fee_collector's pubKey
