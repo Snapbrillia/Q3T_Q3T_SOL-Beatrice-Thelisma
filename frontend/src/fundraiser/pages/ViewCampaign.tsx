@@ -20,6 +20,7 @@ import { clusterApiUrl, Connection } from "@solana/web3.js";
 import * as anchor from "@coral-xyz/anchor";
 import importedWallet from "../../contributor/utils/wallet.json";
 import withdraw from "../../contributor/utils/withdraw";
+import extendCampaign from "../../contributor/utils/extend";
 
 const ViewCampaign = () => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
@@ -126,6 +127,59 @@ const ViewCampaign = () => {
     }
   };
 
+  const handleExtend = async () => {
+    if (publicKey && wallet) {
+      const id = toast.loading("Initializing and extending Campaign time...");
+      const hash = await extendCampaign(publicKey, getProvider(), baseAccount);
+      if (!hash) {
+        toast.update(id, {
+          render:
+            "Initialization Failed / Campaign deadline not reached or maximum extent exceeded",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
+        return;
+      }
+      try {
+        await updateCampaignClose(campaignID);
+      } catch (e) {
+        toast.update(id, {
+          render:
+            "Initialization Failed / Campaign deadline not reached or maximum extent exceeded",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
+        return;
+      }
+      toast.success("Campaign extended", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        transition: Bounce,
+      });
+    } else {
+      toast.error("failed to initialize and load wallet", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: 0,
+        theme: "light",
+        transition: Bounce,
+      });
+      console.log("failed to initialize and load wallet");
+    }
+  };
+
   return (
     <main className="w-[80vw]  py-[5%]">
       <ToastContainer />
@@ -170,8 +224,8 @@ const ViewCampaign = () => {
             </div>
             <span className="block bg-progress_bar border-[1px] border-[white] mt-1 h-[8px] w-full"></span>
             <Button
-              onClick={() => handleSubmit()}
-              disabled={true}
+              onClick={() => handleExtend()}
+              disabled={false}
               className="bg-[#512da8]  hover:bg-[#1a1f2e] mt-5 py-3 text-[1.1rem] disabled:bg-[#512da8] disabled:cursor-default disabled:opacity-80"
             >
               Extend Campaign Time

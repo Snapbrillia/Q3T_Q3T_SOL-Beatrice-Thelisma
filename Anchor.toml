@@ -1,21 +1,21 @@
 [toolchain]
 
 [features]
-resolution = true
+seeds = false
 skip-lint = false
 
 [programs.devnet]
-capstone = "yBFyEKPqF5UKrg4rhKZesNpp9LQoZqVH7fe6jSkbBhr"
+capstone = "sAK3d534qB5DpHNo7nocEQxpSuao9CQ4Kcr1WFCSRYD"
 
 [programs.localnet]
-capstone = "yBFyEKPqF5UKrg4rhKZesNpp9LQoZqVH7fe6jSkbBhr"
+capstone = "sAK3d534qB5DpHNo7nocEQxpSuao9CQ4Kcr1WFCSRYD"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
 cluster = "Devnet"
-wallet = "~/.config/solana/id.json"
+wallet = 'C:\Users\Awesome_webber/.config/solana/id.json'
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
