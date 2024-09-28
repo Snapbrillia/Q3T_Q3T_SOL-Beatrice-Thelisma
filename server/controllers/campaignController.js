@@ -99,9 +99,10 @@ const checkActiveCampaign = async (req, res) => {
     console.log('Checking active campaign');
     try {
         const userId = req.user._id;
-        const activeCampaign = await Campaign.findOne({ creator: userId, status: 'Active' });
+        const activeCampaign = await Campaign.findOne({ creator: userId });
         if (activeCampaign) {
-            return res.status(200).json({ message: 'You already have an active campaign running.' });
+            if ((new Date(activeCampaign.endDate).getTime() / 1000) > (Date.now() / 1000))
+                return res.status(200).json({ message: 'You already have an active campaign running.' });
         }
         return res.status(200).json({ message: 'false' });
     } catch (error) {
