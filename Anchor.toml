@@ -1,14 +1,14 @@
 [toolchain]
 
 [features]
-seeds = false
+resolution = true
 skip-lint = false
 
 [programs.devnet]
-capstone = "sAK3d534qB5DpHNo7nocEQxpSuao9CQ4Kcr1WFCSRYD"
+capstone = "Ad8kcrNvgE17AqV3Xtc9CvdueYc1z1QSJqBwzsh4XzZJ"
 
 [programs.localnet]
-capstone = "sAK3d534qB5DpHNo7nocEQxpSuao9CQ4Kcr1WFCSRYD"
+capstone = "Ad8kcrNvgE17AqV3Xtc9CvdueYc1z1QSJqBwzsh4XzZJ"
 
 [registry]
 url = "https://api.apr.dev"
